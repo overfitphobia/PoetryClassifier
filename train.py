@@ -78,6 +78,6 @@ class Model:
 
 
 if __name__ == '__main__':
-    preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/altered_corpus.json')
+    preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/unordered_corpus.json')
     model = Model(preprocessor.dataset)
     model.train_svm(lda=False)

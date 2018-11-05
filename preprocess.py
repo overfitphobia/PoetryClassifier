@@ -3,6 +3,7 @@ import string
 from nltk import word_tokenize
 from nltk.corpus import stopwords
 
+
 class PreProcess:
     """
     [1] [Y] tokenization : decapticalize to lower case,
@@ -29,7 +30,7 @@ class PreProcess:
         # TODO: Remember to fine-tune the boolean parameter below to accelerate the proprocess
         # TODO: Each time you have employed modification, please set these parameters and remain the save in a json file
         self.reload(reload=True)
-        self.tokenizer(save=True, act=False)
+        self.tokenizer(save=False, act=False, rmstopwords=True)
 
     def reload(self, reload=False):
         if reload:
@@ -39,12 +40,16 @@ class PreProcess:
             with open(self.rootPath) as file:
                 self.dataset = json.load(file)
 
-    def tokenizer(self, save=False, act=True):
+    def tokenizer(self, save=False, act=True, rmstopwords=False):
         if act:
             stopwords_set = set(stopwords.words('english'))
             for index in range(len(self.dataset)):
-                tokens = [word for word in word_tokenize(self.dataset[index]['content'].lower())
-                          if (word not in stopwords_set and word not in string.punctuation)]
+                if rmstopwords:
+                    tokens = [word for word in word_tokenize(self.dataset[index]['content'].lower())
+                              if (word not in stopwords_set and word not in string.punctuation)]
+                else:
+                    tokens = [word for word in word_tokenize(self.dataset[index]['content'].lower())
+                              if word not in string.punctuation]
                 labels = [self.DICT_LABEL2INT[label] for label in self.dataset[index]['label']]
                 self.dataset[index]['content'] = " ".join(tokens)
                 self.dataset[index]['label'] = labels
