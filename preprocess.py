@@ -52,6 +52,7 @@ class PreProcess:
                               if word not in string.punctuation]
                 labels = [self.DICT_LABEL2INT[label] for label in self.dataset[index]['label']]
                 self.dataset[index]['content'] = " ".join(tokens)
+                # self.dataset[index]['content'] = tokens
                 self.dataset[index]['label'] = labels
             if save:
                 with open(self.savePath, 'w') as file:
