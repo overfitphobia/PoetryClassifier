@@ -8,10 +8,17 @@ from sklearn.linear_model import SGDClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.decomposition import LatentDirichletAllocation
 
+from sklearn.neural_network import MLPClassifier
+import random
 
-class SVM:
+from collections import Counter
+
+from sklearn.preprocessing import StandardScaler
+
+class MLP:
     def __init__(self, dataset):
         self.dataset = dataset
+        self.RAND_SEED = random.randint(0, 100000)
         self.DICT_LABEL2INT = {
             "LOVE": 0,
             "NATURE": 1,
@@ -47,32 +54,52 @@ class SVM:
 
     def train(self, lda=False):
         feature = Feature(trained=True)
-        classifier = SGDClassifier(loss='hinge', penalty='l2',
-                                   max_iter=1000, shuffle=True, validation_fraction=0.1)
+
+        # classifier = SGDClassifier(loss='hinge', penalty='l2',
+        #                            max_iter=1000, shuffle=True, validation_fraction=0.1)
+
+        # do not warm start
+        classifier = MLPClassifier(solver='lbfgs',
+                            alpha=1e-5,
+                            activation='logistic',
+                            learning_rate='adaptive',
+                            hidden_layer_sizes=(20, ),
+                            random_state=self.RAND_SEED
+                            )
+
         if lda:
             model = Pipeline([('vectorized', feature.vector),
                               ('tf-idf', feature.tfidftransform),
                               ('lda', feature.ldatransform),
+                              ('scalar', StandardScaler(with_mean = False)),
                               ('clf', classifier)])
         else:
             model = Pipeline([('vectorized', feature.vector),
                               ('tf-idf', feature.tfidftransform),
+                              ('scalar', StandardScaler(with_mean = False)),
                               ('clf', classifier)])
 
         for subj in self.subjects:
             # preprocess training and testing set
             self.encoder_binary(_label=self.DICT_LABEL2INT[subj])
             self.split(rate=0.2, shuffle=True)
+
+            # vx = feature.vector.fit_transform(self.X_train)
+            # tfidf = feature.tfidftransform.fit_transform(vx)
+
+            # print tfidf.shape
+
             # train and predict
             model.fit(self.X_train, self.y_train)
             predict = model.predict(self.X_test)
             # Evaluate
             print("Evaluation report on the subject of " + str(subj))
-            metric = Evaluation(self.y_test, predicted)
+            print("model score = " + str(model.score(self.X_test, self.y_test)))
+            metric = Evaluation(self.y_test, predict)
             metric.output()
 
 
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/unordered_corpus.json')
-    model = SVM(preprocessor.dataset)
+    model = MLP(preprocessor.dataset)
     model.train(lda=False)
