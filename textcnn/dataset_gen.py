@@ -1,48 +1,52 @@
 import json
 import numpy as np
+import os
 
 DICT_LABEL2INT = {
-    "LOVE": 0,
-    "NATURE": 1,
-    "SOCIAL COMMENTARIES": 2,
-    "RELIGION": 3,
-    "LIVING": 4,
-    "RELATIONSHIPS": 5,
-    "ACTIVITIES": 6,
-    "ARTS & SCIENCES": 7,
-    "MYTHOLOGY & FOLKLORE": 8
+    0: "LOVE",
+    1: "NATURE",
+    2: "SOCIAL COMMENTARIES",
+    3: "RELIGION",
+    4: "LIVING",
+    5: "RELATIONSHIPS",
+    6: "ACTIVITIES",
+    7: "ARTS & SCIENCES",
+    8: "MYTHOLOGY & FOLKLORE"
 }
 
-def dataset_gen():
-    def preprocess(file):
+
+def dataset_gen(jsonFile):
+    def preprocessor(file):
         with open(file) as inputFile:
             dataset = json.load(inputFile)
-        _corpus = [entity['content'] for entity in dataset]
-        _labels = [entity['label'] for entity in dataset]
+        corpus = [entity['content'] for entity in dataset]
+        labels = [entity['label'] for entity in dataset]
 
-        _median = np.median([len(entity.split(" ")) for entity in _corpus])
-        return _median, _corpus, _labels
+        median = np.median([len(entity.split(" ")) for entity in _corpus])
+        return median, corpus, labels
 
-    def data_gen(_intType, _corpus, _labels):
-        _pospath = "data/" + str(_intType) + "/postive." + str(_intType)
-        _negpath = "data/" + str(_intType) + "/negative." + str(_intType)
-        with open(_pospath, 'w', encoding='utf8') as _pos, open(_negpath, 'w', encoding='utf8') as _neg:
-            for index in range(len(_labels)):
-                if _intType in _labels[index]:
-                    _pos.write(_corpus[index])
-                    _pos.write('\n')
+    def data_gen(intType, corpus, labels):
+        if not os.path.exists("data/" + DICT_LABEL2INT[intType][0:4]):
+            os.mkdir("data/" + DICT_LABEL2INT[intType][0:4])
+        posPath = "data/" + DICT_LABEL2INT[intType][0:4] + "/" + DICT_LABEL2INT[intType][0:4].lower() + ".positive"
+        negPath = "data/" + DICT_LABEL2INT[intType][0:4] + "/" + DICT_LABEL2INT[intType][0:4].lower() + ".negative"
+        with open(posPath, 'w', encoding='utf8') as pos, open(negPath, 'w', encoding='utf8') as neg:
+            for index in range(len(labels)):
+                if intType in labels[index]:
+                    pos.write(corpus[index])
+                    pos.write('\n')
                 else:
-                    _neg.write(_corpus[index])
-                    _neg.write('\n')
+                    neg.write(corpus[index])
+                    neg.write('\n')
 
-    align, corpus, labels = preprocess('../corpus/ordered_corpus.json')
-    for typeInt in range(9):
-        data_gen(typeInt, corpus, labels)
-    print('align is %d' % align)
+    alignData, corpusData, labelsData = preprocessor(jsonFile)
+    for typeIntData in range(9):
+        data_gen(typeIntData, corpusData, labelsData)
+    print('align is %d' % alignData)
 
 
 if __name__ == '__main__':
-    dataset_gen()
+    dataset_gen('../corpus/ordered_corpus.json')
 
 
 
