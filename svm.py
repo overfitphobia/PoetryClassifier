@@ -2,36 +2,24 @@ from preprocess import PreProcess
 from eval import Evaluation
 from feature import Feature
 
-import sklearn.feature_extraction.text as fet
-from sklearn.model_selection import train_test_split
 from sklearn.linear_model import SGDClassifier
 from sklearn.pipeline import Pipeline
-from sklearn.decomposition import LatentDirichletAllocation
 
 
 class SVM:
-    def __init__(self, dataset):
-        self.dataset = dataset
-        self.DICT_LABEL2INT = {
-            "LOVE": 0,
-            "NATURE": 1,
-            "SOCIAL COMMENTARIES": 2,
-            "RELIGION": 3,
-            "LIVING": 4,
-            "RELATIONSHIPS": 5,
-            "ACTIVITIES": 6,
-            "ARTS & SCIENCES": 7,
-            "MYTHOLOGY & FOLKLORE": 8
-        }
-        self.subjects = ["LOVE", "NATURE", "SOCIAL COMMENTARIES", "RELIGION",
-                         "LIVING", "RELATIONSHIPS", "ACTIVITIES", "ARTS & SCIENCES", "MYTHOLOGY & FOLKLORE"]
+    def __init__(self, pre):
+        self.pre = pre
+        self.dataset = pre.dataset
+        self.corpus = pre.corpus
+        self.labels = pre.labels
 
-        self.corpus = [entity['content'] for entity in self.dataset]
-        self.labels = [entity['label'] for entity in self.dataset]
+        # constant variables for the whole collection
+        self.DICT_LABEL2INT = pre.DICT_LABEL2INT
+        self.subjects = pre.subjects
 
-    def split(self, rate=0.2, shuffle=True):
-        self.X_train, self.X_test, self.y_train, self.y_test = \
-            train_test_split(self.corpus, self.labels, test_size=rate, shuffle=shuffle)
+    def dataset_gen(self, subject, valid=False):
+        self.X_train, self.X_test, self.X_dev, \
+        self.y_train, self.y_test, self.y_dev = self.pre.dataset_gen(subject, valid)
 
     """
     TODO: Pipeline is a classical class which could extract, select features and train the model with some classifier
@@ -41,10 +29,6 @@ class SVM:
         (3) fit and predict with SVM model (which is optimized by SGDOptimizer)
             Remeber to encode the label with +1/-1
     """
-    def encoder_binary(self, _label):
-        self.labels = [1 if _label in entity['label'] else -1 for entity in self.dataset]
-
-
     def train(self, lda=False):
         feature = Feature(trained=True)
         classifier = SGDClassifier(loss='hinge', penalty='l2',
@@ -61,11 +45,12 @@ class SVM:
 
         for subj in self.subjects:
             # preprocess training and testing set
-            self.encoder_binary(_label=self.DICT_LABEL2INT[subj])
-            self.split(rate=0.2, shuffle=True)
+            self.dataset_gen(subject=subj, valid=False)
+
             # train and predict
             model.fit(self.X_train, self.y_train)
-            predict = model.predict(self.X_test)
+            predicted = model.predict(self.X_test)
+
             # Evaluate
             print("Evaluation report on the subject of " + str(subj))
             metric = Evaluation(self.y_test, predicted)
@@ -73,6 +58,6 @@ class SVM:
 
 
 if __name__ == '__main__':
-    preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/unordered_corpus.json')
-    model = SVM(preprocessor.dataset)
+    preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
+    model = SVM(preprocessor)
     model.train(lda=False)
