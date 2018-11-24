@@ -1,6 +1,7 @@
 import json
 import numpy as np
 import os
+from sklearn.model_selection import train_test_split
 
 DICT_LABEL2INT = {
     0: "LOVE",
@@ -40,7 +41,10 @@ def dataset_gen(jsonFile):
             os.mkdir("data/" + DICT_LABEL2INT[intType][0:4])
         posPath = "data/" + DICT_LABEL2INT[intType][0:4] + "/" + DICT_LABEL2INT[intType][0:4].lower() + ".positive"
         negPath = "data/" + DICT_LABEL2INT[intType][0:4] + "/" + DICT_LABEL2INT[intType][0:4].lower() + ".negative"
-        format_write(posPath, negPath, corpus, labels, intType)
+        x_train, x_dev, y_train, y_dev = \
+            train_test_split(corpus, labels, test_size=0.1, shuffle=True, random_state=17)
+        format_write(posPath + ".train", negPath + ".train", x_train, y_train, intType)
+        format_write(posPath + ".test", negPath + ".test", x_dev, y_dev, intType)
 
     alignData, corpusData, labelsData = preprocessor(jsonFile)
     for typeIntData in range(9):

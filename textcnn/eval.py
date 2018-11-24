@@ -16,8 +16,8 @@ import csv
 
 # Data Parameters
 typeName = "LOVE"
-posPath = "./data/" + typeName + "/" + typeName.lower() + ".positive"
-negPath = "./data/" + typeName + "/" + typeName.lower() + ".negative"
+posPath = "./data/" + typeName + "/" + typeName.lower() + ".positive" + ".test"
+negPath = "./data/" + typeName + "/" + typeName.lower() + ".negative" + ".test"
 
 tf.flags.DEFINE_string("positive_data_file", posPath, "Data source for the positive data.")
 tf.flags.DEFINE_string("negative_data_file", negPath, "Data source for the negative data.")
