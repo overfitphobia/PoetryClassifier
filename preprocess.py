@@ -69,10 +69,10 @@ class PreProcess:
         target = self.DICT_LABEL2INT[subj]
         label_encoded = [1 if target in entity['label'] else -1 for entity in self.dataset]
         x_train, x_test, y_train, y_test = \
-            train_test_split(self.corpus, label_encoded, test_size=self.test_rate, shuffle=False, random_state=17)
+            train_test_split(self.corpus, label_encoded, test_size=self.test_rate, shuffle=True, random_state=17)
         if valid:
             x_train, x_dev, y_train, y_dev = \
-                train_test_split(x_train, y_train, test_size=0.1, shuffle=False, random_state=17)
+                train_test_split(x_train, y_train, test_size=0.1, shuffle=True, random_state=17)
         else:
             x_dev, y_dev = None, None
         return x_train, x_test, x_dev, y_train, y_test, y_dev

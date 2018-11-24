@@ -5,6 +5,7 @@ import numpy as np
 import os
 import time
 import datetime
+import sys
 import data_helpers
 from text_cnn import TextCNN
 from tensorflow.contrib import learn
@@ -32,7 +33,9 @@ tf.flags.DEFINE_boolean("log_device_placement", False, "Log placement of ops on 
 
 
 FLAGS = tf.flags.FLAGS
-FLAGS._parse_flags()
+# FLAGS._parse_flags() # this function is not supported by new features of tensorflow
+FLAGS(sys.argv)
+
 print("\nParameters:")
 for attr, value in sorted(FLAGS.__flags.items()):
     print("{}={}".format(attr.upper(), value))
