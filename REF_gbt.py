@@ -1,13 +1,22 @@
+#!/usr/bin/env python3
+"""
+Created on Sat Nov 17 02:02:18 2018
+
+@author: katieliu
+"""
+
 from preprocess import PreProcess
 from eval import Evaluation
 from feature import Feature
 
-from sklearn.linear_model import SGDClassifier
+from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
+from sklearn.ensemble import GradientBoostingClassifier
 
 
-class SVM:
+class gbt:
     def __init__(self, pre):
+        self.RAND_SEED = 16383
         self.pre = pre
         self.dataset = pre.dataset
         self.corpus = pre.corpus
@@ -21,18 +30,28 @@ class SVM:
         self.X_train, self.X_test, self.X_dev, \
         self.y_train, self.y_test, self.y_dev = self.pre.dataset_gen(subject, valid)
 
-    """
-    TODO: Pipeline is a classical class which could extract, select features and train the model with some classifier
-    Instruction for train_SVM:
-        (1) vectorize the corpus with word counts
-        (2) employ tf-idf transformation
-        (3) fit and predict with SVM model (which is optimized by SGDOptimizer)
-            Remeber to encode the label with +1/-1
-    """
     def train(self, lda=False):
+        """
+        trains a sklearn GradientBoostingClassifier on each subject.
+        """
         feature = Feature(trained=True)
-        classifier = SGDClassifier(loss='hinge', penalty='l2',
-                                   max_iter=1000, shuffle=True, validation_fraction=0.1)
+# =============================================================================
+#         classifier = SGDClassifier(loss='hinge', penalty='l2',
+#                                    max_iter=1000, shuffle=True, validation_fraction=0.1)
+# =============================================================================
+        
+        """
+        TODO:
+            1) tune sklearn gbt classifier
+            2) implement xgboost xgbclassifier
+        """
+        
+        # employs early stopping 
+        classifier = GradientBoostingClassifier(n_estimators=500, 
+                                                validation_fraction=0.1,
+                                                n_iter_no_change=5, tol=0.01,
+                                                random_state=self.RAND_SEED)
+
         if lda:
             model = Pipeline([('vectorized', feature.vector),
                               ('tf-idf', feature.tfidftransform),
@@ -49,15 +68,18 @@ class SVM:
 
             # train and predict
             model.fit(self.X_train, self.y_train)
-            predicted = model.predict(self.X_test)
+              
+            predicted = model.predict(self.X_test)             
 
             # Evaluate
             print("Evaluation report on the subject of " + str(subj))
+            print("model score = " + str(model.score(self.X_test, self.y_test)))  
             metric = Evaluation(self.y_test, predicted)
             metric.output()
+            print("\n\n\n")
 
 
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
-    model = SVM(preprocessor)
+    model = gbt(preprocessor)
     model.train(lda=False)

@@ -5,7 +5,6 @@ class Evaluation:
     def __init__(self, gtruth, predicted):
         self.predicted = predicted
         self.gtruth = gtruth
-        self.output()
 
     def output(self):
         self.report()
