@@ -44,7 +44,6 @@ class SVM:
     def encoder_binary(self, _label):
         self.labels = [1 if _label in entity['label'] else -1 for entity in self.dataset]
 
-
     def train(self, lda=False):
         feature = Feature(trained=True)
         classifier = SGDClassifier(loss='hinge', penalty='l2',
@@ -61,14 +60,14 @@ class SVM:
 
         for subject in self.subjects:
             # preprocess training and testing set
-            self.encoder_binary(_label=self.DICT_LABEL2INT[subj])
+            self.encoder_binary(_label=self.DICT_LABEL2INT[subject])
             self.split(rate=0.2, shuffle=True)
             # train and predict
             model.fit(self.X_train, self.y_train)
             predict = model.predict(self.X_test)
             # Evaluate
-            print("Evaluation report on the subject of " + str(subj))
-            metric = Evaluation(self.y_test, predicted)
+            print("Evaluation report on the subject of " + str(subject))
+            metric = Evaluation(self.y_test, predict)
             metric.output()
 
 

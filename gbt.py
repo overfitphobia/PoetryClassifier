@@ -17,11 +17,8 @@ from sklearn.decomposition import LatentDirichletAllocation
 from sklearn.ensemble import GradientBoostingClassifier
 
 
-
-
 class gbt:
-    
-    
+
     def __init__(self, dataset):
         self.RAND_SEED = 16383
         self.dataset = dataset
@@ -48,38 +45,35 @@ class gbt:
         2) if valid_rate provided: test further split into validation-test.
         """
         self.X_train, self.X_test, self.y_train, self.y_test = \
-            train_test_split(self.corpus, self.labels, test_size=(1-train_rate), shuffle=shuffle)
+            train_test_split(self.corpus, self.labels, test_size=(1 - train_rate), shuffle=shuffle)
         if valid_rate:
             self.X_test, self.X_valid, self.y_test, self.y_valid = \
                 train_test_split(self.X_test, self.y_test, test_size=valid_rate, shuffle=shuffle)
 
-
     def encoder_binary(self, _label):
         self.labels = [1 if _label in entity['label'] else -1 for entity in self.dataset]
-
 
     def train(self, lda=False):
         """
         trains a sklearn GradientBoostingClassifier on each subject.
         """
         feature = Feature(trained=True)
-# =============================================================================
-#         classifier = SGDClassifier(loss='hinge', penalty='l2',
-#                                    max_iter=1000, shuffle=True, validation_fraction=0.1)
-# =============================================================================
-        
+        # =============================================================================
+        #         classifier = SGDClassifier(loss='hinge', penalty='l2',
+        #                                    max_iter=1000, shuffle=True, validation_fraction=0.1)
+        # =============================================================================
+
         """
         TODO:
             1) tune sklearn gbt classifier
             2) implement xgboost xgbclassifier
         """
-        
+
         # employs early stopping 
-        classifier = GradientBoostingClassifier(n_estimators=500, 
+        classifier = GradientBoostingClassifier(n_estimators=500,
                                                 validation_fraction=0.1,
                                                 n_iter_no_change=5, tol=0.01,
                                                 random_state=self.RAND_SEED)
-
 
         if lda:
             model = Pipeline([('vectorized', feature.vector),
@@ -97,12 +91,12 @@ class gbt:
             self.split(train_rate=0.8, shuffle=True)
             # train and predict
             model.fit(self.X_train, self.y_train)
-              
-            predicted = model.predict(self.X_test)             
+
+            predicted = model.predict(self.X_test)
 
             # Evaluate
             print("Evaluation report on the subject of " + str(subj))
-            print("model score = " + str(model.score(self.X_test, self.y_test)))  
+            print("model score = " + str(model.score(self.X_test, self.y_test)))
             metric = Evaluation(self.y_test, predicted)
             metric.output()
             print("\n\n\n")
