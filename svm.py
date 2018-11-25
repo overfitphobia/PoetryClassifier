@@ -51,9 +51,13 @@ class SVM:
 
             # train and predict
             model.fit(self.X_train, self.y_train)
+
+            # store true labels and predictions
             true.append(self.y_test)
             predicted.append(model.predict(self.X_test))
 
+        # convert them to sparse matrix (N * L)
+        # matrix[i][j] = 1 indicates entry i has label j,
         true_matrix, pred_matrix = np.array(true, int).T, np.array(predicted, int).T
         true_matrix[true_matrix == -1] = 0
         pred_matrix[pred_matrix == -1] = 0
