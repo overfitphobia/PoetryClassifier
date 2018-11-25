@@ -1,6 +1,7 @@
 from preprocess import PreProcess
 from eval import Evaluation
 from feature import Feature
+import numpy as np
 
 from sklearn.linear_model import SGDClassifier
 from sklearn.pipeline import Pipeline
@@ -43,18 +44,22 @@ class SVM:
                               ('tf-idf', feature.tfidftransform),
                               ('clf', classifier)])
 
-        for subj in self.subjects:
+        true, predicted = [], []
+        for i in range(len(self.subjects)):
             # preprocess training and testing set
-            self.dataset_gen(subject=subj, valid=False)
+            self.dataset_gen(subject=self.subjects[i], valid=False)
 
             # train and predict
             model.fit(self.X_train, self.y_train)
-            predicted = model.predict(self.X_test)
+            true.append(self.y_test)
+            predicted.append(model.predict(self.X_test))
 
-            # Evaluate
-            print("Evaluation report on the subject of " + str(subj))
-            metric = Evaluation(self.y_test, predicted)
-            metric.output()
+        true_matrix, pred_matrix = np.array(true, int).T, np.array(predicted, int).T
+        true_matrix[true_matrix == -1] = 0
+        pred_matrix[pred_matrix == -1] = 0
+
+        evaluation = Evaluation(self.subjects)
+        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix)
 
 
 if __name__ == '__main__':
