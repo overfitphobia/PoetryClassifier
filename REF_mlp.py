@@ -7,6 +7,7 @@ from sklearn.pipeline import Pipeline
 
 from sklearn.neural_network import MLPClassifier
 import random
+import numpy as np
 
 from collections import Counter
 from sklearn.preprocessing import StandardScaler
@@ -63,6 +64,7 @@ class MLP:
                               ('scalar', StandardScaler(with_mean=False)),
                               ('clf', classifier)])
 
+        true, predicted = [], []
         for subj in self.subjects:
             # preprocess training and testing set
             self.dataset_gen(subj, valid=False)
@@ -74,12 +76,19 @@ class MLP:
 
             # train and predict
             model.fit(self.X_train, self.y_train)
-            predict = model.predict(self.X_test)
-            # Evaluate
-            print("Evaluation report on the subject of " + str(subj))
-            print("model score = " + str(model.score(self.X_test, self.y_test)))
-            metric = Evaluation(self.y_test, predict)
-            metric.output()
+
+            # store true labels and predictions
+            true.append(self.y_test)
+            predicted.append(model.predict(self.X_test))
+
+        # convert them to sparse matrix (N * L)
+        # matrix[i][j] = 1 indicates entry i has label j,
+        true_matrix, pred_matrix = np.array(true, int).T, np.array(predicted, int).T
+        true_matrix[true_matrix == -1] = 0
+        pred_matrix[pred_matrix == -1] = 0
+
+        evaluation = Evaluation(self.subjects)
+        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix)
 
 
 if __name__ == '__main__':

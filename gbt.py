@@ -8,6 +8,7 @@ Created on Sat Nov 17 02:02:18 2018
 from preprocess import PreProcess
 from eval import Evaluation
 from feature import Feature
+import numpy as np
 
 import sklearn.feature_extraction.text as fet
 from sklearn.model_selection import train_test_split
@@ -106,6 +107,7 @@ class gbt:
                               ('tf-idf', feature.tfidftransform),
                               ('clf', classifier)])
 
+        true, predicted = [], []
         for subj in self.subjects:
             # preprocess training and testing set
             self.encoder_binary(_label=self.DICT_LABEL2INT[subj])
@@ -113,14 +115,18 @@ class gbt:
             # train and predict
             model.fit(self.X_train, self.y_train)
 
-            predicted = model.predict(self.X_test)
+            # store true labels and predictions
+            true.append(self.y_test)
+            predicted.append(model.predict(self.X_test))
 
-            # Evaluate
-            print("Evaluation report on the subject of " + str(subj))
-            print("model score = " + str(model.score(self.X_test, self.y_test)))
-            metric = Evaluation(self.y_test, predicted)
-            metric.output()
-            print("\n\n\n")
+        # convert them to sparse matrix (N * L)
+        # matrix[i][j] = 1 indicates entry i has label j,
+        true_matrix, pred_matrix = np.array(true, int).T, np.array(predicted, int).T
+        true_matrix[true_matrix == -1] = 0
+        pred_matrix[pred_matrix == -1] = 0
+
+        evaluation = Evaluation(self.subjects)
+        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix)
 
 
 if __name__ == '__main__':
