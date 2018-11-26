@@ -11,12 +11,20 @@ from feature import Feature
 
 import sklearn.feature_extraction.text as fet
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import SGDClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.decomposition import LatentDirichletAllocation
 from sklearn.ensemble import GradientBoostingClassifier
 
+import xgboost as xgb
+from xgboost.sklearn import XGBClassifier
+from sklearn.model_selection import cross_validate
+from sklearn import metrics   #Additional scklearn functions
+from sklearn.model_selection import GridSearchCV   #Perforing grid search
 
+
+import os
+
+os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 
 class gbt:
@@ -79,6 +87,19 @@ class gbt:
                                                 validation_fraction=0.1,
                                                 n_iter_no_change=5, tol=0.01,
                                                 random_state=self.RAND_SEED)
+        
+        
+        classifier = XGBClassifier(learning_rate =0.1,
+                             n_estimators=500,
+                             max_depth=5,
+                             min_child_weight=1,
+                             gamma=0,
+                             subsample=0.8,
+                             colsample_bytree=0.8,
+                             objective= 'binary:logistic',
+                             nthread=4,
+                             scale_pos_weight=1,
+                             seed=self.RAND_SEED)
 
 
         if lda:
