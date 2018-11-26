@@ -1,0 +1,252 @@
+Evaluation report on the subject of LOVE
+model score = 0.8331573389651531
+report on the whole classification
+              precision    recall  f1-score   support
+
+          -1       0.87      0.95      0.90      2375
+           1       0.48      0.26      0.34       466
+
+   micro avg       0.83      0.83      0.83      2841
+   macro avg       0.68      0.60      0.62      2841
+weighted avg       0.80      0.83      0.81      2841
+
+confusion matrix on the whole classification
+[[2245  130]
+ [ 344  122]]
+report on the whole classification
+              precision    recall  f1-score   support
+
+          -1       0.87      0.95      0.90      2375
+           1       0.48      0.26      0.34       466
+
+   micro avg       0.83      0.83      0.83      2841
+   macro avg       0.68      0.60      0.62      2841
+weighted avg       0.80      0.83      0.81      2841
+
+confusion matrix on the whole classification
+[[2245  130]
+ [ 344  122]]
+Evaluation report on the subject of NATURE
+model score = 0.7029215065117916
+report on the whole classification
+              precision    recall  f1-score   support
+
+          -1       0.84      0.73      0.78      2071
+           1       0.46      0.62      0.53       770
+
+   micro avg       0.70      0.70      0.70      2841
+   macro avg       0.65      0.68      0.66      2841
+weighted avg       0.74      0.70      0.71      2841
+
+confusion matrix on the whole classification
+[[1519  552]
+ [ 292  478]]
+report on the whole classification
+              precision    recall  f1-score   support
+
+          -1       0.84      0.73      0.78      2071
+           1       0.46      0.62      0.53       770
+
+   micro avg       0.70      0.70      0.70      2841
+   macro avg       0.65      0.68      0.66      2841
+weighted avg       0.74      0.70      0.71      2841
+
+confusion matrix on the whole classification
+[[1519  552]
+ [ 292  478]]
+Evaluation report on the subject of SOCIAL COMMENTARIES
+model score = 0.7148891235480465
+report on the whole classification
+              precision    recall  f1-score   support
+
+          -1       0.80      0.80      0.80      1993
+           1       0.52      0.52      0.52       848
+
+   micro avg       0.71      0.71      0.71      2841
+   macro avg       0.66      0.66      0.66      2841
+weighted avg       0.71      0.71      0.71      2841
+
+confusion matrix on the whole classification
+[[1588  405]
+ [ 405  443]]
+report on the whole classification
+              precision    recall  f1-score   support
+
+          -1       0.80      0.80      0.80      1993
+           1       0.52      0.52      0.52       848
+
+   micro avg       0.71      0.71      0.71      2841
+   macro avg       0.66      0.66      0.66      2841
+weighted avg       0.71      0.71      0.71      2841
+
+confusion matrix on the whole classification
+[[1588  405]
+ [ 405  443]]
+Evaluation report on the subject of RELIGION
+model score = 0.8585005279831045
+report on the whole classification
+              precision    recall  f1-score   support
+
+          -1       0.92      0.92      0.92      2532
+           1       0.35      0.34      0.34       309
+
+   micro avg       0.86      0.86      0.86      2841
+   macro avg       0.63      0.63      0.63      2841
+weighted avg       0.86      0.86      0.86      2841
+
+confusion matrix on the whole classification
+[[2335  197]
+ [ 205  104]]
+report on the whole classification
+              precision    recall  f1-score   support
+
+          -1       0.92      0.92      0.92      2532
+           1       0.35      0.34      0.34       309
+
+   micro avg       0.86      0.86      0.86      2841
+   macro avg       0.63      0.63      0.63      2841
+weighted avg       0.86      0.86      0.86      2841
+
+confusion matrix on the whole classification
+[[2335  197]
+ [ 205  104]]
+Evaluation report on the subject of LIVING
+model score = 0.584653291094685
+report on the whole classification
+              precision    recall  f1-score   support
+
+          -1       0.60      0.56      0.58      1455
+           1       0.57      0.61      0.59      1386
+
+   micro avg       0.58      0.58      0.58      2841
+   macro avg       0.59      0.59      0.58      2841
+weighted avg       0.59      0.58      0.58      2841
+
+confusion matrix on the whole classification
+[[818 637]
+ [543 843]]
+report on the whole classification
+              precision    recall  f1-score   support
+
+          -1       0.60      0.56      0.58      1455
+           1       0.57      0.61      0.59      1386
+
+   micro avg       0.58      0.58      0.58      2841
+   macro avg       0.59      0.59      0.58      2841
+weighted avg       0.59      0.58      0.58      2841
+
+confusion matrix on the whole classification
+[[818 637]
+ [543 843]]
+Evaluation report on the subject of RELATIONSHIPS
+model score = 0.6374516015487505
+report on the whole classification
+              precision    recall  f1-score   support
+
+          -1       0.75      0.73      0.74      2028
+           1       0.38      0.41      0.39       813
+
+   micro avg       0.64      0.64      0.64      2841
+   macro avg       0.57      0.57      0.57      2841
+weighted avg       0.65      0.64      0.64      2841
+
+confusion matrix on the whole classification
+[[1480  548]
+ [ 482  331]]
+report on the whole classification
+              precision    recall  f1-score   support
+
+          -1       0.75      0.73      0.74      2028
+           1       0.38      0.41      0.39       813
+
+   micro avg       0.64      0.64      0.64      2841
+   macro avg       0.57      0.57      0.57      2841
+weighted avg       0.65      0.64      0.64      2841
+
+confusion matrix on the whole classification
+[[1480  548]
+ [ 482  331]]
+Evaluation report on the subject of ACTIVITIES
+model score = 0.817669834565294
+report on the whole classification
+              precision    recall  f1-score   support
+
+          -1       0.85      0.95      0.90      2386
+           1       0.33      0.13      0.19       455
+
+   micro avg       0.82      0.82      0.82      2841
+   macro avg       0.59      0.54      0.54      2841
+weighted avg       0.77      0.82      0.78      2841
+
+confusion matrix on the whole classification
+[[2263  123]
+ [ 395   60]]
+report on the whole classification
+              precision    recall  f1-score   support
+
+          -1       0.85      0.95      0.90      2386
+           1       0.33      0.13      0.19       455
+
+   micro avg       0.82      0.82      0.82      2841
+   macro avg       0.59      0.54      0.54      2841
+weighted avg       0.77      0.82      0.78      2841
+
+confusion matrix on the whole classification
+[[2263  123]
+ [ 395   60]]
+Evaluation report on the subject of ARTS & SCIENCES
+model score = 0.708905315029919
+report on the whole classification
+              precision    recall  f1-score   support
+
+          -1       0.83      0.78      0.80      2174
+           1       0.40      0.47      0.43       667
+
+   micro avg       0.71      0.71      0.71      2841
+   macro avg       0.61      0.63      0.62      2841
+weighted avg       0.73      0.71      0.72      2841
+
+confusion matrix on the whole classification
+[[1699  475]
+ [ 352  315]]
+report on the whole classification
+              precision    recall  f1-score   support
+
+          -1       0.83      0.78      0.80      2174
+           1       0.40      0.47      0.43       667
+
+   micro avg       0.71      0.71      0.71      2841
+   macro avg       0.61      0.63      0.62      2841
+weighted avg       0.73      0.71      0.72      2841
+
+confusion matrix on the whole classification
+[[1699  475]
+ [ 352  315]]
+Evaluation report on the subject of MYTHOLOGY & FOLKLORE
+model score = 0.9197465681098205
+report on the whole classification
+              precision    recall  f1-score   support
+
+          -1       0.97      0.95      0.96      2733
+           1       0.11      0.16      0.13       108
+
+   micro avg       0.92      0.92      0.92      2841
+   macro avg       0.54      0.55      0.54      2841
+weighted avg       0.93      0.92      0.93      2841
+
+confusion matrix on the whole classification
+[[2596  137]
+ [  91   17]]
+report on the whole classification
+              precision    recall  f1-score   support
+
+          -1       0.97      0.95      0.96      2733
+           1       0.11      0.16      0.13       108
+
+   micro avg       0.92      0.92      0.92      2841
+   macro avg       0.54      0.55      0.54      2841
+weighted avg       0.93      0.92      0.93      2841
+
+confusion matrix on the whole classification
+[[2596  137]
+ [  91   17]]
