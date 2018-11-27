@@ -9,13 +9,12 @@ from preprocess import PreProcess
 from eval import Evaluation
 from feature import Feature
 
-import sklearn.feature_extraction.text as fet
 from sklearn.pipeline import Pipeline
 from sklearn.decomposition import LatentDirichletAllocation
 
 import xgboost as xgb
 from xgboost.sklearn import XGBClassifier
-from sklearn import metrics   #Additional scklearn functions
+from sklearn.preprocessing import StandardScaler
 
 import os
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
@@ -50,15 +49,6 @@ class gbt:
         """
         feature = Feature(trained=True)
 
-
-
-        # employs early stopping 
-# =============================================================================
-#         classifier = GradientBoostingClassifier(n_estimators=500,
-#                                                 validation_fraction=0.1,
-#                                                 n_iter_no_change=5, tol=0.01,
-#                                                 random_state=self.RAND_SEED)
-# =============================================================================
         param_fixed = {
             'objective': 'binary:logistic',
             'silent': 1,
@@ -74,20 +64,6 @@ class gbt:
                  "subsample":0.8,
                  "colsample_bytree":0.8,
                  "scale_pos_weight":1}
-        
-# =============================================================================
-#         classifier = XGBClassifier(learning_rate =0.1,
-#                              n_estimators=500,
-#                              max_depth=5,
-#                              min_child_weight=1,
-#                              gamma=0,
-#                              subsample=0.8,
-#                              colsample_bytree=0.8,
-#                              objective= 'binary:logistic',
-#                              nthread=4,
-#                              scale_pos_weight=1,
-#                              seed=self.RAND_SEED)
-# =============================================================================
         
         true_labels = []
         predicted_labels = []
@@ -109,10 +85,12 @@ class gbt:
                 model = Pipeline([('vectorized', feature.vector),
                                   ('tf-idf', feature.tfidftransform),
                                   ('lda', feature.ldatransform),
+                                  #('scalar', StandardScaler(with_mean = False)),
                                   ('clf', classifier)])
             else:
                 model = Pipeline([('vectorized', feature.vector),
                                   ('tf-idf', feature.tfidftransform),
+                                  #('scalar', StandardScaler(with_mean = False)),
                                   ('clf', classifier)])
             
             
@@ -122,8 +100,6 @@ class gbt:
             # hamming
             predicted_labels.append(predicted)
             true_labels.append(self.y_test)
-            #predicted_labels.append([i if i!=1 else self.DICT_LABEL2INT[subj] for i in predicted])
-            #true_labels.append([i if i!=1 else self.DICT_LABEL2INT[subj] for i in self.y_test])
 
             # Evaluate
             print("Evaluation report on the subject of " + str(subj))
@@ -134,6 +110,13 @@ class gbt:
         true_matrix, pred_matrix = np.array(true_labels, int).T, np.array(predicted_labels, int).T
         true_matrix[true_matrix == -1] = 0
         pred_matrix[pred_matrix == -1] = 0
+        
+        tune = "base_countv"
+        
+        np.savetxt("./gbt_data/gbt_"+tune+"_true.csv", true_matrix, delimiter=",")
+        np.savetxt("./gbt_data/gbt_"+tune+"_pred.csv", pred_matrix, delimiter=",")
+        
+        
         evaluation = Evaluation(self.subjects)
         evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix, model_name='GBT')
 
@@ -141,6 +124,6 @@ class gbt:
 
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
-    g = gbt(preprocessor, "gbt_old_param.json")
-    #g = gbt(preprocessor, "")
+    #g = gbt(preprocessor, "gbt_old_param.json")
+    g = gbt(preprocessor, "")
     g.train(lda=False)

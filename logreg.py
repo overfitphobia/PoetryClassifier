@@ -8,6 +8,8 @@ from feature import Feature
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.decomposition import LatentDirichletAllocation
+from sklearn.preprocessing import StandardScaler
+
 
 import os
 import numpy as np
@@ -58,10 +60,12 @@ class logreg:
                 model = Pipeline([('vectorized', feature.vector),
                                   ('tf-idf', feature.tfidftransform),
                                   ('lda', feature.ldatransform),
+                                  ('scalar', StandardScaler(with_mean = False)),
                                   ('clf', classifier)])
             else:
                 model = Pipeline([('vectorized', feature.vector),
                                   ('tf-idf', feature.tfidftransform),
+                                  #('scalar', StandardScaler(with_mean = False)),
                                   ('clf', classifier)])
             
             
@@ -71,8 +75,6 @@ class logreg:
             # hamming
             predicted_labels.append(predicted)
             true_labels.append(self.y_test)
-            #predicted_labels.append([i if i!=1 else self.DICT_LABEL2INT[subj] for i in predicted])
-            #true_labels.append([i if i!=1 else self.DICT_LABEL2INT[subj] for i in self.y_test])
 
             # Evaluate
             print("Evaluation report on the subject of " + str(subj))
@@ -80,13 +82,24 @@ class logreg:
             metric = Evaluation([subj,"not_"+subj])
             metric.model_evaluate(np.array(self.y_test), np.array(predicted))
             print("\n\n\n")
-        predicted_labels = np.array(predicted_labels)#.transpose()
-        true_labels= np.array(true_labels)#.transpose()
-        #metric = Evaluation(self.subjects)
-        #metric.model_evaluate(true_labels, predicted_labels)
+        true_matrix, pred_matrix = np.array(true_labels, int).T, np.array(predicted_labels, int).T
+        true_matrix[true_matrix == -1] = 0
+        pred_matrix[pred_matrix == -1] = 0
+        
+        fp = "lda_tfidf"
+        
+        np.savetxt("./logreg_data_eval/logreg_"+fp+"_true.csv", true_matrix, delimiter=",")
+        np.savetxt("./logreg_data_eval/logreg_"+fp+"_pred.csv", pred_matrix, delimiter=",")
+        
+        
+        evaluation = Evaluation(self.subjects)
+        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix)
+
+
+
         
 
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
     g = logreg(preprocessor)
-    g.train(lda=False)
+    g.train(lda=True)
