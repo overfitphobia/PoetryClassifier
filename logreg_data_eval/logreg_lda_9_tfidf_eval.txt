@@ -1,0 +1,182 @@
+Evaluation report on the subject of LOVE
+model score = 0.8285814853924675
+Model evaluation:
+Hamming Loss: 0.17141851460753255
+Classification Report:
+              precision    recall  f1-score   support
+
+        LOVE       0.83      1.00      0.91      2354
+    not_LOVE       0.00      0.00      0.00       487
+
+   micro avg       0.83      0.83      0.83      2841
+   macro avg       0.41      0.50      0.45      2841
+weighted avg       0.69      0.83      0.75      2841
+
+
+
+
+
+Evaluation report on the subject of NATURE
+model score = 0.7342485040478705
+Model evaluation:
+Hamming Loss: 0.26575149595212955
+Classification Report:
+              precision    recall  f1-score   support
+
+      NATURE       0.73      1.00      0.85      2086
+  not_NATURE       0.00      0.00      0.00       755
+
+   micro avg       0.73      0.73      0.73      2841
+   macro avg       0.37      0.50      0.42      2841
+weighted avg       0.54      0.73      0.62      2841
+
+
+
+
+
+Evaluation report on the subject of SOCIAL COMMENTARIES
+model score = 0.689545934530095
+Model evaluation:
+Hamming Loss: 0.31045406546990495
+Classification Report:
+                         precision    recall  f1-score   support
+
+    SOCIAL COMMENTARIES       0.69      1.00      0.82      1959
+not_SOCIAL COMMENTARIES       0.00      0.00      0.00       882
+
+              micro avg       0.69      0.69      0.69      2841
+              macro avg       0.34      0.50      0.41      2841
+           weighted avg       0.48      0.69      0.56      2841
+
+
+
+
+
+Evaluation report on the subject of RELIGION
+model score = 0.8912354804646251
+Model evaluation:
+Hamming Loss: 0.10876451953537487
+Classification Report:
+              precision    recall  f1-score   support
+
+    RELIGION       0.89      1.00      0.94      2532
+not_RELIGION       0.00      0.00      0.00       309
+
+   micro avg       0.89      0.89      0.89      2841
+   macro avg       0.45      0.50      0.47      2841
+weighted avg       0.79      0.89      0.84      2841
+
+
+
+
+
+Evaluation report on the subject of LIVING
+model score = 0.5195353748680043
+Model evaluation:
+Hamming Loss: 0.4804646251319958
+Classification Report:
+              precision    recall  f1-score   support
+
+      LIVING       0.52      0.97      0.68      1472
+  not_LIVING       0.52      0.03      0.06      1369
+
+   micro avg       0.52      0.52      0.52      2841
+   macro avg       0.52      0.50      0.37      2841
+weighted avg       0.52      0.52      0.38      2841
+
+
+
+
+
+Evaluation report on the subject of RELATIONSHIPS
+model score = 0.6976416754663851
+Model evaluation:
+Hamming Loss: 0.30235832453361494
+Classification Report:
+                   precision    recall  f1-score   support
+
+    RELATIONSHIPS       0.70      1.00      0.82      1982
+not_RELATIONSHIPS       0.00      0.00      0.00       859
+
+        micro avg       0.70      0.70      0.70      2841
+        macro avg       0.35      0.50      0.41      2841
+     weighted avg       0.49      0.70      0.57      2841
+
+
+
+
+
+Evaluation report on the subject of ACTIVITIES
+model score = 0.8451249560014079
+Model evaluation:
+Hamming Loss: 0.15487504399859203
+Classification Report:
+                precision    recall  f1-score   support
+
+    ACTIVITIES       0.85      1.00      0.92      2401
+not_ACTIVITIES       0.00      0.00      0.00       440
+
+     micro avg       0.85      0.85      0.85      2841
+     macro avg       0.42      0.50      0.46      2841
+  weighted avg       0.71      0.85      0.77      2841
+
+
+
+
+
+Evaluation report on the subject of ARTS & SCIENCES
+model score = 0.770151355156635
+Model evaluation:
+Hamming Loss: 0.229848644843365
+Classification Report:
+                     precision    recall  f1-score   support
+
+    ARTS & SCIENCES       0.77      1.00      0.87      2188
+not_ARTS & SCIENCES       0.00      0.00      0.00       653
+
+          micro avg       0.77      0.77      0.77      2841
+          macro avg       0.39      0.50      0.44      2841
+       weighted avg       0.59      0.77      0.67      2841
+
+
+
+
+
+Evaluation report on the subject of MYTHOLOGY & FOLKLORE
+model score = 0.9567053854276664
+Model evaluation:
+Hamming Loss: 0.04329461457233368
+Classification Report:
+                          precision    recall  f1-score   support
+
+    MYTHOLOGY & FOLKLORE       0.96      1.00      0.98      2718
+not_MYTHOLOGY & FOLKLORE       0.00      0.00      0.00       123
+
+               micro avg       0.96      0.96      0.96      2841
+               macro avg       0.48      0.50      0.49      2841
+            weighted avg       0.92      0.96      0.94      2841
+
+
+
+
+
+Model evaluation:
+Hamming Loss: 0.22969220540498259
+Classification Report:
+                      precision    recall  f1-score   support
+
+                LOVE       0.00      0.00      0.00       487
+              NATURE       0.00      0.00      0.00       755
+ SOCIAL COMMENTARIES       0.00      0.00      0.00       882
+            RELIGION       0.00      0.00      0.00       309
+              LIVING       0.52      0.03      0.06      1369
+       RELATIONSHIPS       0.00      0.00      0.00       859
+          ACTIVITIES       0.00      0.00      0.00       440
+     ARTS & SCIENCES       0.00      0.00      0.00       653
+MYTHOLOGY & FOLKLORE       0.00      0.00      0.00       123
+
+           micro avg       0.52      0.01      0.02      5877
+           macro avg       0.06      0.00      0.01      5877
+        weighted avg       0.12      0.01      0.02      5877
+         samples avg       0.02      0.01      0.01      5877
+
