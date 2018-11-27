@@ -77,7 +77,7 @@ class MLP:
         pred_matrix[pred_matrix == -1] = 0
 
         evaluation = Evaluation(self.subjects)
-        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix)
+        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix, model_name='MLP')
 
 
 if __name__ == '__main__':

@@ -9,15 +9,15 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.decomposition import LatentDirichletAllocation
 
-
 import os
+import numpy as np
+
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
-import numpy as np
 
 class logreg:
 
-    def __init__(self,pre):
+    def __init__(self, pre):
         self.RAND_SEED = 17
         self.pre = pre
         self.dataset = pre.dataset
@@ -85,7 +85,6 @@ class logreg:
         #metric = Evaluation(self.subjects)
         #metric.model_evaluate(true_labels, predicted_labels)
         
-
 
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
