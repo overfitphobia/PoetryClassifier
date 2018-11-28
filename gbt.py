@@ -15,6 +15,8 @@ from sklearn.decomposition import LatentDirichletAllocation
 import xgboost as xgb
 from xgboost.sklearn import XGBClassifier
 from sklearn.preprocessing import StandardScaler
+from sklearn import metrics
+
 
 import os
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
@@ -23,7 +25,8 @@ import numpy as np
 
 class gbt:
 
-    def __init__(self, pre, paramfile):
+    def __init__(self, pre, paramfile, mn):
+        self.modelname = mn
         self.RAND_SEED = 17
         self.pre = pre
         self.dataset = pre.dataset
@@ -85,7 +88,7 @@ class gbt:
                 model = Pipeline([('vectorized', feature.vector),
                                   ('tf-idf', feature.tfidftransform),
                                   ('lda', feature.ldatransform),
-                                  #('scalar', StandardScaler(with_mean = False)),
+                                  ('scalar', StandardScaler(with_mean = False)),
                                   ('clf', classifier)])
             else:
                 model = Pipeline([('vectorized', feature.vector),
@@ -104,26 +107,22 @@ class gbt:
             # Evaluate
             print("Evaluation report on the subject of " + str(subj))
             print("model score = " + str(model.score(self.X_test, self.y_test)))
-            metric = Evaluation([subj,"not_"+subj])
-            metric.model_evaluate(np.array(self.y_test), np.array(predicted))
+            print("classification report:")
+            print(metrics.classification_report(self.y_test, predicted))
             print("\n\n\n")
         true_matrix, pred_matrix = np.array(true_labels, int).T, np.array(predicted_labels, int).T
         true_matrix[true_matrix == -1] = 0
         pred_matrix[pred_matrix == -1] = 0
-        
-        tune = "base_countv"
-        
-        np.savetxt("./gbt_data/gbt_"+tune+"_true.csv", true_matrix, delimiter=",")
-        np.savetxt("./gbt_data/gbt_"+tune+"_pred.csv", pred_matrix, delimiter=",")
-        
+
         
         evaluation = Evaluation(self.subjects)
-        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix, model_name='GBT')
+        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix, model_name=self.modelname)
 
 
 
 if __name__ == '__main__':
+    mn = "GBT_"+"tuned_tfidf"
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
-    #g = gbt(preprocessor, "gbt_old_param.json")
-    g = gbt(preprocessor, "")
+    g = gbt(preprocessor, "gbt_param.json", mn)
+    #g = gbt(preprocessor, "")
     g.train(lda=False)
