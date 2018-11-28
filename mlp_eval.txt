@@ -1,3 +1,25 @@
+(20, ), CV
+Model evaluation:
+Hamming Loss: 0.2199538503656772
+Classification Report:
+                      precision    recall  f1-score   support
+
+                LOVE       0.82      0.06      0.10       487
+              NATURE       0.74      0.09      0.16       755
+ SOCIAL COMMENTARIES       0.63      0.21      0.32       882
+            RELIGION       0.65      0.04      0.07       309
+              LIVING       0.54      0.62      0.58      1369
+       RELATIONSHIPS       0.42      0.03      0.05       859
+          ACTIVITIES       0.25      0.00      0.00       440
+     ARTS & SCIENCES       0.36      0.01      0.01       653
+MYTHOLOGY & FOLKLORE       0.00      0.00      0.00       123
+
+           micro avg       0.56      0.20      0.29      5877
+           macro avg       0.49      0.12      0.14      5877
+        weighted avg       0.54      0.20      0.22      5877
+         samples avg       0.36      0.22      0.25      5877
+
+(20, ), CV+TF
 Model evaluation:
 Hamming Loss: 0.228675349055
 Classification Report:
@@ -17,3 +39,87 @@ MYTHOLOGY & FOLKLORE       0.50      0.01      0.02       123
            macro avg       0.49      0.16      0.17      5877
         weighted avg       0.49      0.28      0.27      5877
          samples avg       0.44      0.29      0.32      5877
+
+(20, ), CV+TF+LDA=50
+Model evaluation:
+Hamming Loss: 0.26567327623293835
+Classification Report:
+                      precision    recall  f1-score   support
+
+                LOVE       0.80      0.01      0.02       487
+              NATURE       0.25      0.14      0.18       755
+ SOCIAL COMMENTARIES       0.39      0.11      0.17       882
+            RELIGION       0.11      0.09      0.10       309
+              LIVING       0.49      0.98      0.65      1369
+       RELATIONSHIPS       0.00      0.00      0.00       859
+          ACTIVITIES       0.16      0.12      0.13       440
+     ARTS & SCIENCES       0.23      0.08      0.12       653
+MYTHOLOGY & FOLKLORE       0.00      0.00      0.00       123
+
+           micro avg       0.39      0.29      0.33      5877
+           macro avg       0.27      0.17      0.15      5877
+        weighted avg       0.31      0.29      0.23      5877
+         samples avg       0.42      0.30      0.32      5877
+
+(10, 5) CV
+Model evaluation:
+Hamming Loss: 0.2601978958895538
+Classification Report:
+                      precision    recall  f1-score   support
+
+                LOVE       0.39      0.43      0.41       487
+              NATURE       0.61      0.27      0.38       755
+ SOCIAL COMMENTARIES       0.59      0.25      0.35       882
+            RELIGION       0.52      0.05      0.09       309
+              LIVING       0.48      0.02      0.04      1369
+       RELATIONSHIPS       0.45      0.11      0.18       859
+          ACTIVITIES       0.21      0.57      0.31       440
+     ARTS & SCIENCES       0.40      0.31      0.35       653
+MYTHOLOGY & FOLKLORE       0.50      0.01      0.02       123
+
+           micro avg       0.38      0.21      0.27      5877
+           macro avg       0.46      0.22      0.24      5877
+        weighted avg       0.48      0.21      0.24      5877
+         samples avg       0.30      0.23      0.24      5877
+
+(10, 5), CV+TF
+Model evaluation:
+Hamming Loss: 0.368141108373
+Classification Report:
+                      precision    recall  f1-score   support
+
+                LOVE       0.55      0.22      0.32       487
+              NATURE       0.29      0.96      0.45       755
+ SOCIAL COMMENTARIES       0.33      0.98      0.49       882
+            RELIGION       0.59      0.07      0.13       309
+              LIVING       0.49      0.98      0.65      1369
+       RELATIONSHIPS       0.31      0.97      0.47       859
+          ACTIVITIES       0.33      0.09      0.14       440
+     ARTS & SCIENCES       0.33      0.69      0.44       653
+MYTHOLOGY & FOLKLORE       0.50      0.01      0.02       123
+
+           micro avg       0.36      0.75      0.48      5877
+           macro avg       0.41      0.55      0.34      5877
+        weighted avg       0.39      0.75      0.44      5877
+         samples avg       0.36      0.76      0.47      5877
+
+(10, 5) CV+TF+LDA=50
+Model evaluation:
+Hamming Loss: 0.23407250967969026
+Classification Report:
+                      precision    recall  f1-score   support
+
+                LOVE       0.00      0.00      0.00       487
+              NATURE       0.00      0.00      0.00       755
+ SOCIAL COMMENTARIES       0.00      0.00      0.00       882
+            RELIGION       0.00      0.00      0.00       309
+              LIVING       0.47      0.60      0.53      1369
+       RELATIONSHIPS       0.00      0.00      0.00       859
+          ACTIVITIES       0.00      0.00      0.00       440
+     ARTS & SCIENCES       0.00      0.00      0.00       653
+MYTHOLOGY & FOLKLORE       0.00      0.00      0.00       123
+
+           micro avg       0.47      0.14      0.21      5877
+           macro avg       0.05      0.07      0.06      5877
+        weighted avg       0.11      0.14      0.12      5877
+         samples avg       0.29      0.14      0.18      5877
