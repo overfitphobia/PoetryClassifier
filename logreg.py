@@ -66,8 +66,8 @@ class logreg:
                                   ('clf', classifier)])
             else:
                 model = Pipeline([('vectorized', feature.vector),
-                                  #('tf-idf', feature.tfidftransform),
-                                  #('scalar', StandardScaler(with_mean = False)),
+                                  ('tf-idf', feature.tfidftransform),
+                                  ('scalar', StandardScaler(with_mean = False)),
                                   ('clf', classifier)])
             
             
@@ -97,7 +97,7 @@ class logreg:
         
 
 if __name__ == '__main__':
-    mn = "LogReg_"+"countv"
+    mn = "LogReg_"+"lda_100"
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
     g = logreg(preprocessor, mn)
-    g.train(lda=False)
+    g.train(lda=True)
