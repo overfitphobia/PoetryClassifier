@@ -9,6 +9,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.decomposition import LatentDirichletAllocation
 from sklearn.preprocessing import StandardScaler
+from sklearn import metrics
 
 
 import os
@@ -19,7 +20,8 @@ os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 class logreg:
 
-    def __init__(self, pre):
+    def __init__(self, pre, mn):
+        self.modelname = mn
         self.RAND_SEED = 17
         self.pre = pre
         self.dataset = pre.dataset
@@ -62,7 +64,7 @@ class logreg:
             else:
                 model = Pipeline([('vectorized', feature.vector),
                                   ('tf-idf', feature.tfidftransform),
-                                  #('scalar', StandardScaler(with_mean = False)),
+                                  ('scalar', StandardScaler(with_mean = False)),
                                   ('clf', classifier)])
             
             model.fit(self.X_train, self.y_train)
@@ -75,23 +77,18 @@ class logreg:
             # Evaluate
             print("Evaluation report on the subject of " + str(subj))
             print("model score = " + str(model.score(self.X_test, self.y_test)))
-            metric = Evaluation([subj,"not_"+subj])
-            metric.model_evaluate(np.array(self.y_test), np.array(predicted))
+            print(metrics.classification_report(self.y_test, predicted))
             print("\n\n\n")
         true_matrix, pred_matrix = np.array(true_labels, int).T, np.array(predicted_labels, int).T
         true_matrix[true_matrix == -1] = 0
         pred_matrix[pred_matrix == -1] = 0
-        
-        fp = "lda_tfidf"
-        
-        np.savetxt("./logreg_data_eval/logreg_"+fp+"_true.csv", true_matrix, delimiter=",")
-        np.savetxt("./logreg_data_eval/logreg_"+fp+"_pred.csv", pred_matrix, delimiter=",")
-        
+
         evaluation = Evaluation(self.subjects)
-        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix)
+        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix, model_name = self.modelname)
 
 
 if __name__ == '__main__':
+    mn = "LogReg_"+"lda_100"
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
-    g = logreg(preprocessor)
+    g = logreg(preprocessor, mn)
     g.train(lda=True)

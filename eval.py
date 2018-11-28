@@ -2,9 +2,14 @@ from sklearn import metrics
 import h5py
 import glob
 import matplotlib.pyplot as plt
+import numpy as np
+import os
 
 
 class Evaluation:
+    subjects = ["LOVE", "NATURE", "SOC COM", "RELIGION",
+                "LIVING", "RELA.", "ACT.", "A & S", "M & F"]
+
     def __init__(self, subjs):
         self.subjs = subjs
 
@@ -35,27 +40,41 @@ class Evaluation:
     def overall_evaluate():
         data = {}
         # load matrix data from files
-        for file in glob.glob('results/*.h5'):
-            model_name = file.replace('results/', '').split('_')[0]
+        for file in glob.glob('results/LogReg_*.h5'):
+            model_name = file.replace('results/', '').replace('_matrix.h5', '')
             with h5py.File(file, 'r') as hf:
                 true_matrix = hf['true_matrix'][:]
                 pred_matrix = hf['pred_matrix'][:]
-                data[model_name] = {'true_matrix': true_matrix, 'pred_matrix': pred_matrix}
-
-        # currently using 'Precision'
-        plt.title('Feature Selection Diagram')
-        plt.xlabel('Categories')
-        plt.ylabel('Precision')
-        plt.legend()
-        plt.show()
-        plt.savefig("results/feature_selection_diagram.jpg")
+                import warnings
+                warnings.filterwarnings('ignore')
+                report_dict = metrics.classification_report(true_matrix, pred_matrix, target_names=Evaluation.subjects,
+                                                            output_dict=True)
+                precisions = []
+                for subj in Evaluation.subjects:
+                    precisions.append(report_dict[subj]['precision'])
+                data[model_name] = precisions
+        return data
 
     @staticmethod
-    def make_diagrams():
-        pass
+    def make_diagrams(d, x_label='x', y_label='y', title='diagram'):
+        plt.rcParams["figure.figsize"] = (8, 6)
+        plt.title(title)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        x = np.arange(len(Evaluation.subjects))
+        plt.xticks(x, Evaluation.subjects)
+        for model in d.keys():
+            y = d[model]
+            assert len(y) == len(Evaluation.subjects)
+            plt.plot(x, y, label=model)
+        plt.legend()
+        if not os.path.isdir('diagrams'):
+            os.mkdir('diagrams')
+        plt.savefig('diagrams/{}.png'.format('_'.join(title.lower().split(' '))))
+        plt.show()
 
 
 if __name__ == '__main__':
-    Evaluation.overall_evaluate()
-    Evaluation.make_diagrams()
+    data = Evaluation.overall_evaluate()
+    Evaluation.make_diagrams(data, x_label='Subjects', y_label='Precision', title='Model Precision Diagram')
 
