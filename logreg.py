@@ -8,16 +8,20 @@ from feature import Feature
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.decomposition import LatentDirichletAllocation
+from sklearn.preprocessing import StandardScaler
+from sklearn import metrics
 
 
 import os
+import numpy as np
+
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
-import numpy as np
 
 class logreg:
 
-    def __init__(self,pre):
+    def __init__(self, pre, mn):
+        self.modelname = mn
         self.RAND_SEED = 17
         self.pre = pre
         self.dataset = pre.dataset
@@ -35,18 +39,15 @@ class logreg:
         trains a xgboost GradientBoostingClassifier on each subject.
         """
         feature = Feature(trained=True)
-        
-        
+
         classifier = LogisticRegression(
                 penalty = 'l2',
                 max_iter = 100,
                 solver = 'liblinear',
                 random_state = self.RAND_SEED)
-
         
         true_labels = []
         predicted_labels = []
-
 
         for subj in self.subjects:
             # preprocess training and testing set
@@ -58,12 +59,13 @@ class logreg:
                 model = Pipeline([('vectorized', feature.vector),
                                   ('tf-idf', feature.tfidftransform),
                                   ('lda', feature.ldatransform),
+                                  ('scalar', StandardScaler(with_mean = False)),
                                   ('clf', classifier)])
             else:
                 model = Pipeline([('vectorized', feature.vector),
                                   ('tf-idf', feature.tfidftransform),
+                                  ('scalar', StandardScaler(with_mean = False)),
                                   ('clf', classifier)])
-            
             
             model.fit(self.X_train, self.y_train)
 
@@ -71,23 +73,22 @@ class logreg:
             # hamming
             predicted_labels.append(predicted)
             true_labels.append(self.y_test)
-            #predicted_labels.append([i if i!=1 else self.DICT_LABEL2INT[subj] for i in predicted])
-            #true_labels.append([i if i!=1 else self.DICT_LABEL2INT[subj] for i in self.y_test])
 
             # Evaluate
             print("Evaluation report on the subject of " + str(subj))
             print("model score = " + str(model.score(self.X_test, self.y_test)))
-            metric = Evaluation([subj,"not_"+subj])
-            metric.model_evaluate(np.array(self.y_test), np.array(predicted))
+            print(metrics.classification_report(self.y_test, predicted))
             print("\n\n\n")
-        predicted_labels = np.array(predicted_labels)#.transpose()
-        true_labels= np.array(true_labels)#.transpose()
-        #metric = Evaluation(self.subjects)
-        #metric.model_evaluate(true_labels, predicted_labels)
-        
+        true_matrix, pred_matrix = np.array(true_labels, int).T, np.array(predicted_labels, int).T
+        true_matrix[true_matrix == -1] = 0
+        pred_matrix[pred_matrix == -1] = 0
+
+        evaluation = Evaluation(self.subjects)
+        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix, model_name = self.modelname)
 
 
 if __name__ == '__main__':
+    mn = "LogReg_"+"lda_100"
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
-    g = logreg(preprocessor)
-    g.train(lda=False)
+    g = logreg(preprocessor, mn)
+    g.train(lda=True)

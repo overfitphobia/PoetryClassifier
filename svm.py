@@ -63,10 +63,10 @@ class SVM:
         pred_matrix[pred_matrix == -1] = 0
 
         evaluation = Evaluation(self.subjects)
-        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix)
+        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix, model_name='SVM', save=False)
 
 
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
     model = SVM(preprocessor)
-    model.train(lda=False)
+    model.train(lda=True)
