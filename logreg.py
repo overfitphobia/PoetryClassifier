@@ -37,18 +37,15 @@ class logreg:
         trains a xgboost GradientBoostingClassifier on each subject.
         """
         feature = Feature(trained=True)
-        
-        
+
         classifier = LogisticRegression(
                 penalty = 'l2',
                 max_iter = 100,
                 solver = 'liblinear',
                 random_state = self.RAND_SEED)
-
         
         true_labels = []
         predicted_labels = []
-
 
         for subj in self.subjects:
             # preprocess training and testing set
@@ -67,7 +64,6 @@ class logreg:
                                   ('tf-idf', feature.tfidftransform),
                                   #('scalar', StandardScaler(with_mean = False)),
                                   ('clf', classifier)])
-            
             
             model.fit(self.X_train, self.y_train)
 
@@ -91,13 +87,9 @@ class logreg:
         np.savetxt("./logreg_data_eval/logreg_"+fp+"_true.csv", true_matrix, delimiter=",")
         np.savetxt("./logreg_data_eval/logreg_"+fp+"_pred.csv", pred_matrix, delimiter=",")
         
-        
         evaluation = Evaluation(self.subjects)
         evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix)
 
-
-
-        
 
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')

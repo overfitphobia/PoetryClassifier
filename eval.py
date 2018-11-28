@@ -1,6 +1,7 @@
 from sklearn import metrics
 import h5py
 import glob
+import matplotlib.pyplot as plt
 
 
 class Evaluation:
@@ -33,6 +34,7 @@ class Evaluation:
     @staticmethod
     def overall_evaluate():
         data = {}
+        # load matrix data from files
         for file in glob.glob('results/*.h5'):
             model_name = file.replace('results/', '').split('_')[0]
             with h5py.File(file, 'r') as hf:
@@ -40,11 +42,20 @@ class Evaluation:
                 pred_matrix = hf['pred_matrix'][:]
                 data[model_name] = {'true_matrix': true_matrix, 'pred_matrix': pred_matrix}
 
+        # currently using 'Precision'
+        plt.title('Feature Selection Diagram')
+        plt.xlabel('Categories')
+        plt.ylabel('Precision')
+        plt.legend()
+        plt.show()
+        plt.savefig("results/feature_selection_diagram.jpg")
+
     @staticmethod
-    def make_diagrams(self):
+    def make_diagrams():
         pass
 
 
 if __name__ == '__main__':
     Evaluation.overall_evaluate()
     Evaluation.make_diagrams()
+

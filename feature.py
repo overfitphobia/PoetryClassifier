@@ -8,7 +8,6 @@ class Feature:
     def __init__(self, trained=True):
         self.vector = feature_ext.CountVectorizer(ngram_range=(1, 2))
         self.tfidftransform = feature_ext.TfidfTransformer(norm='l2')
-        self.pca = PCA()
         self.ldatransform = LatentDirichletAllocation(n_components=100)
         if trained:
             self.w2vmodel = Word2Vec.load('./model/word2vector.model')

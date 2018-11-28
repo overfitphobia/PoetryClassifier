@@ -14,6 +14,7 @@ import random
 
 from sklearn.preprocessing import StandardScaler
 
+
 class MLP:
     def __init__(self, pre):
         self.RAND_SEED = random.randint(0, 100000)
@@ -38,23 +39,23 @@ class MLP:
 
         # do not warm start
         classifier = MLPClassifier(solver='lbfgs',
-                            alpha=1e-5,
-                            activation='logistic',
-                            learning_rate='adaptive',
-                            hidden_layer_sizes=(20, ),
-                            random_state=self.RAND_SEED
-                            )
+                                   alpha=1e-5,
+                                   activation='logistic',
+                                   learning_rate='adaptive',
+                                   hidden_layer_sizes=(20,),
+                                   random_state=self.RAND_SEED
+                                   )
 
         if lda:
             model = Pipeline([('vectorized', feature.vector),
                               ('tf-idf', feature.tfidftransform),
                               ('lda', feature.ldatransform),
-                              ('scalar', StandardScaler(with_mean = False)),
+                              ('scalar', StandardScaler(with_mean=False)),
                               ('clf', classifier)])
         else:
             model = Pipeline([('vectorized', feature.vector),
                               ('tf-idf', feature.tfidftransform),
-                              ('scalar', StandardScaler(with_mean = False)),
+                              ('scalar', StandardScaler(with_mean=False)),
                               ('clf', classifier)])
 
         true, predicted = [], []

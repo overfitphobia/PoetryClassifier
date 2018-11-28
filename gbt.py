@@ -92,8 +92,7 @@ class gbt:
                                   ('tf-idf', feature.tfidftransform),
                                   #('scalar', StandardScaler(with_mean = False)),
                                   ('clf', classifier)])
-            
-            
+
             model.fit(self.X_train, self.y_train)
 
             predicted = model.predict(self.X_test)
@@ -115,11 +114,9 @@ class gbt:
         
         np.savetxt("./gbt_data/gbt_"+tune+"_true.csv", true_matrix, delimiter=",")
         np.savetxt("./gbt_data/gbt_"+tune+"_pred.csv", pred_matrix, delimiter=",")
-        
-        
+
         evaluation = Evaluation(self.subjects)
         evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix, model_name='GBT')
-
 
 
 if __name__ == '__main__':
