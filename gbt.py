@@ -93,7 +93,7 @@ class gbt:
             else:
                 model = Pipeline([('vectorized', feature.vector),
                                   ('tf-idf', feature.tfidftransform),
-                                  #('scalar', StandardScaler(with_mean = False)),
+                                  ('scalar', StandardScaler(with_mean = False)),
                                   ('clf', classifier)])
             
             
@@ -121,8 +121,8 @@ class gbt:
 
 
 if __name__ == '__main__':
-    mn = "GBT_"+"tuned_tfidf"
+    mn = "GBT_"+"tuned_lda100"
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
     g = gbt(preprocessor, "gbt_param.json", mn)
     #g = gbt(preprocessor, "")
-    g.train(lda=False)
+    g.train(lda=True)
