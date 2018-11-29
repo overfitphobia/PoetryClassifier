@@ -7,7 +7,6 @@ from feature import Feature
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
-from sklearn.decomposition import LatentDirichletAllocation
 from sklearn.preprocessing import StandardScaler
 from sklearn import metrics
 

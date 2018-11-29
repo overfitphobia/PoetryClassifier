@@ -10,7 +10,6 @@ from eval import Evaluation
 from feature import Feature
 
 from sklearn.pipeline import Pipeline
-from sklearn.decomposition import LatentDirichletAllocation
 
 import xgboost as xgb
 from xgboost.sklearn import XGBClassifier
