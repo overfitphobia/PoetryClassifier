@@ -20,8 +20,12 @@ os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 class logreg:
 
-    def __init__(self, pre, mn):
-        self.modelname = mn
+    def __init__(self, pre, istfidf, isnorm, islda, modelname):
+        self.istfidf = istfidf
+        self.isnorm = isnorm
+        self.islda = islda
+        self.modelname = modelname
+
         self.RAND_SEED = 17
         self.pre = pre
         self.dataset = pre.dataset
@@ -38,13 +42,12 @@ class logreg:
         """
         trains a xgboost GradientBoostingClassifier on each subject.
         """
-        feature = Feature(trained=True)
-
+        feature = Feature(trained=False)
         classifier = LogisticRegression(
-                penalty = 'l2',
-                max_iter = 100,
-                solver = 'liblinear',
-                random_state = self.RAND_SEED)
+            penalty='l2',
+            max_iter=100,
+            solver='liblinear',
+            random_state=self.RAND_SEED)
         
         true_labels = []
         predicted_labels = []
@@ -54,19 +57,20 @@ class logreg:
             self.dataset_gen(subject=subj, valid=False)
 
             # train and predict
-            
-            if lda:
-                model = Pipeline([('vectorized', feature.vector),
-                                  ('tf-idf', feature.tfidftransform),
-                                  ('lda', feature.ldatransform),
-                                  ('scalar', StandardScaler(with_mean = False)),
-                                  ('clf', classifier)])
+            pipeline_steps = [('vectorized', feature.vector)]
+            if self.istfidf:
+                pipeline_steps.append(('tf-idf', feature.tfidftransform))
+            if self.islda == 'small':
+                pipeline_steps.append(('lda', feature.ldatransform_small))
+            elif self.islda == 'large':
+                pipeline_steps.append(('lda', feature.ldatransform_large))
             else:
-                model = Pipeline([('vectorized', feature.vector),
-                                  ('tf-idf', feature.tfidftransform),
-                                  ('scalar', StandardScaler(with_mean = False)),
-                                  ('clf', classifier)])
-            
+                pass
+            if self.isnorm:
+                pipeline_steps.append(('scalar', StandardScaler(with_mean=False)))
+            pipeline_steps.append(('clf', classifier))
+            model = Pipeline(steps=pipeline_steps)
+
             model.fit(self.X_train, self.y_train)
 
             predicted = model.predict(self.X_test)
@@ -84,11 +88,11 @@ class logreg:
         pred_matrix[pred_matrix == -1] = 0
 
         evaluation = Evaluation(self.subjects)
-        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix, model_name = self.modelname)
+        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix, model_name=self.modelname)
 
 
 if __name__ == '__main__':
-    mn = "LogReg_"+"lda_100"
+    modelname = "LogReg_"+"lda_100"
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
-    g = logreg(preprocessor, mn)
+    g = logreg(preprocessor, istfidf=True, isnorm=True, islda='None', modelname=modelname)
     g.train(lda=True)

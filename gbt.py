@@ -26,15 +26,21 @@ import numpy as np
 
 class gbt:
 
-    def __init__(self, pre, paramfile, mn):
-        self.modelname = mn
+    def __init__(self, pre, paramfile, istfidf, isnorm, islda, modelname):
+        self.istfidf = istfidf
+        self.isnorm = isnorm
+        self.islda = islda
+        self.modelname = modelname
         self.RAND_SEED = 17
+
         self.pre = pre
         self.dataset = pre.dataset
         self.corpus = pre.corpus
         self.labels = pre.labels
+
         self.DICT_LABEL2INT = pre.DICT_LABEL2INT
         self.subjects = pre.subjects
+
         if paramfile:
             with open(paramfile) as f:
                 s = f.readlines()[0]
@@ -51,7 +57,7 @@ class gbt:
         """
         trains a xgboost GradientBoostingClassifier on each subject.
         """
-        feature = Feature(trained=True)
+        feature = Feature(trained=False)
 
         param_fixed = {
             'objective': 'binary:logistic',
@@ -83,18 +89,20 @@ class gbt:
             else:
                 param_fixed.update(base)
             classifier = XGBClassifier(**param_fixed)
-            
-            if lda:
-                model = Pipeline([('vectorized', feature.vector),
-                                  ('tf-idf', feature.tfidftransform),
-                                  ('lda', feature.ldatransform),
-                                  ('scalar', StandardScaler(with_mean = False)),
-                                  ('clf', classifier)])
+
+            pipeline_steps = [('vectorized', feature.vector)]
+            if self.istfidf:
+                pipeline_steps.append(('tf-idf', feature.tfidftransform))
+            if self.islda == 'small':
+                pipeline_steps.append(('lda', feature.ldatransform_small))
+            elif self.islda == 'large':
+                pipeline_steps.append(('lda', feature.ldatransform_large))
             else:
-                model = Pipeline([('vectorized', feature.vector),
-                                  ('tf-idf', feature.tfidftransform),
-                                  ('scalar', StandardScaler(with_mean = False)),
-                                  ('clf', classifier)])
+                pass
+            if self.isnorm:
+                pipeline_steps.append(('scalar', StandardScaler(with_mean=False)))
+            pipeline_steps.append(('clf', classifier))
+            model = Pipeline(steps=pipeline_steps)
 
             model.fit(self.X_train, self.y_train)
 
@@ -109,6 +117,7 @@ class gbt:
             print("classification report:")
             print(metrics.classification_report(self.y_test, predicted))
             print("\n\n\n")
+
         true_matrix, pred_matrix = np.array(true_labels, int).T, np.array(predicted_labels, int).T
         true_matrix[true_matrix == -1] = 0
         pred_matrix[pred_matrix == -1] = 0
@@ -118,8 +127,7 @@ class gbt:
 
 
 if __name__ == '__main__':
-    mn = "GBT_"+"tuned_lda100"
+    modelname = "GBT_"+"tuned_lda100"
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
-    g = gbt(preprocessor, "gbt_param.json", mn)
-    #g = gbt(preprocessor, "")
-    g.train(lda=True)
+    g = gbt(preprocessor, paramfile="gbt_param.json", istfidf=True, isnorm=True, islda='None', modelname=modelname)
+    g.train()
