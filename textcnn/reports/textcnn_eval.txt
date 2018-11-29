@@ -1,0 +1,32 @@
+Model evaluation:
+Hamming Loss: 0.21925091875830793
+Accuracy evaluation: 0.2322308233638283
+Accuracy for each category:
+SUBJECT                   ACCURACY
+LOVE                      0.8403
+NATURE                    0.7544
+SOCIAL COMMENTARIES       0.7002
+RELIGION                  0.8846
+LIVING                    0.5855
+RELATIONSHIPS             0.6805
+ACTIVITIES                0.8536
+ARTS & SCIENCES           0.7692
+MYTHOLOGY & FOLKLORE      0.9585
+Classification Report:
+                      precision    recall  f1-score   support
+
+                LOVE       0.53      0.31      0.39       234
+              NATURE       0.60      0.36      0.45       398
+ SOCIAL COMMENTARIES       0.55      0.37      0.44       456
+            RELIGION       0.47      0.10      0.16       162
+              LIVING       0.55      0.62      0.58       662
+       RELATIONSHIPS       0.46      0.31      0.37       432
+          ACTIVITIES       0.38      0.01      0.03       206
+     ARTS & SCIENCES       0.47      0.23      0.31       318
+MYTHOLOGY & FOLKLORE       0.00      0.00      0.00        59
+
+           micro avg       0.53      0.35      0.42      2927
+           macro avg       0.44      0.26      0.30      2927
+        weighted avg       0.51      0.35      0.39      2927
+         samples avg       0.35      0.20      0.23      2927
+

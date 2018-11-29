@@ -16,9 +16,16 @@ class NB:
         self.modelname = modelname
         if istfidf:
             self.modelname += '_tfidf'
+        else:
+            self.modelname += '_cv'
         if isnorm:
             self.modelname += '_norm'
-        self.modelname += '_' + islda
+        if islda == 'small':
+            self.modelname += '_lda-small'
+        elif islda == 'large':
+            self.modelname += '_lda-large'
+        else:
+            pass
 
         self.pre = pre
         self.dataset = pre.dataset
@@ -85,12 +92,6 @@ class NB:
 
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
-    '''
-    istfidf=False  isnorm=False  islda='null'  : [modelname]_null
-    istfidf=True   isnorm=False  islda='null'  : [modelname]_tfidf_null
-    istfidf=True   isnorm=True   islda='null'  : [modelname]_tfidf_norm_null
-    istfidf=True   isnorm=True   islda='small' : [modelname]_tfidf_norm_small
-    istfidf=True   isnorm=True   islda='large' : [modelname]_tfidf_norm_large
-    '''
+    # islda should be one of ['None', 'small', 'large']
     model = NB(preprocessor, istfidf=True, isnorm=True, islda='large', modelname='NB')
     model.train()

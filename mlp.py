@@ -18,9 +18,16 @@ class MLP:
         self.modelname = modelname
         if istfidf:
             self.modelname += '_tfidf'
+        else:
+            self.modelname += '_cv'
         if isnorm:
             self.modelname += '_norm'
-        self.modelname += '_' + islda
+        if islda == 'small':
+            self.modelname += '_lda-small'
+        elif islda == 'large':
+            self.modelname += '_lda-large'
+        else:
+            pass
 
         self.RAND_SEED = random.randint(0, 100000)
         self.pre = pre
@@ -90,5 +97,6 @@ class MLP:
 
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
+    # islda should be one of ['None', 'small', 'large']
     model = MLP(preprocessor, istfidf=True, isnorm=True, islda='None', modelname='MLP')
     model.train()

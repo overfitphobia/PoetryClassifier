@@ -16,9 +16,16 @@ class SVM:
         self.modelname = modelname
         if istfidf:
             self.modelname += '_tfidf'
+        else:
+            self.modelname += '_cv'
         if isnorm:
             self.modelname += '_norm'
-        self.modelname += '_' + islda
+        if islda == 'small':
+            self.modelname += '_lda-small'
+        elif islda == 'large':
+            self.modelname += '_lda-large'
+        else:
+            pass
 
         self.pre = pre
         self.dataset = pre.dataset
@@ -62,9 +69,9 @@ class SVM:
         model = Pipeline(steps=pipeline_steps)
 
         true, predicted = [], []
-        for subj in range(len(self.subjects)):
+        for subj in self.subjects:
             # preprocess training and testing set
-            self.dataset_gen(subject=self.subjects[i], valid=False)
+            self.dataset_gen(subject=subj, valid=False)
 
             # train and predict
             model.fit(self.X_train, self.y_train)
@@ -80,10 +87,11 @@ class SVM:
         pred_matrix[pred_matrix == -1] = 0
 
         evaluation = Evaluation(self.subjects)
-        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix, model_name='SVM', save=False)
+        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix, model_name='SVM')
 
 
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
-    model = SVM(preprocessor, istfidf=True, isnorm=True, islda='None', modelname='SVM')
+    # islda should be one of ['None', 'small', 'large']
+    model = SVM(preprocessor, istfidf=False, isnorm=False, islda='None', modelname='SVM')
     model.train()
