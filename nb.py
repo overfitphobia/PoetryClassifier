@@ -3,14 +3,18 @@ from eval import Evaluation
 from feature import Feature
 import numpy as np
 
-from sklearn.linear_model import SGDClassifier
 from sklearn.pipeline import Pipeline
-
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.preprocessing import StandardScaler
 
+
 class NB:
-    def __init__(self, pre):
+    def __init__(self, pre, istfidf, isnorm, islda, modelname):
+        self.istfidf = istfidf
+        self.isnorm = isnorm
+        self.islda = islda
+        self.modelname = modelname
+
         self.pre = pre
         self.dataset = pre.dataset
         self.corpus = pre.corpus
@@ -21,7 +25,7 @@ class NB:
         self.subjects = pre.subjects
 
     def dataset_gen(self, subject, valid=False):
-        self.X_train, self.X_test, self.X_dev, \
+        self.X_train, self.X_test, self.X_dev,\
         self.y_train, self.y_test, self.y_dev = self.pre.dataset_gen(subject, valid)
 
     """
@@ -32,21 +36,24 @@ class NB:
         (3) fit and predict with SVM model (which is optimized by SGDOptimizer)
             Remeber to encode the label with +1/-1
     """
-    def train(self, lda=False):
-        feature = Feature(trained=True)
+    def train(self):
+        feature = Feature(trained=False)
         classifier = MultinomialNB()
 
-        if lda:
-            model = Pipeline([('vectorized', feature.vector),
-                              ('tf-idf', feature.tfidftransform),
-                              ('lda', feature.ldatransform),
-                              ('scalar', StandardScaler(with_mean = False)),
-                              ('clf', classifier)])
+        pipeline_steps = [('vectorized', feature.vector)]
+        if self.istfidf:
+            pipeline_steps.append(('tf-idf', feature.tfidftransform))
+        if self.islda == 'small':
+            pipeline_steps.append(('lda', feature.ldatransform_small))
+            print('hahahahahha')
+        elif self.islda == 'large':
+            pipeline_steps.append(('lda', feature.ldatransform_large))
         else:
-            model = Pipeline([('vectorized', feature.vector),
-                              ('tf-idf', feature.tfidftransform),
-                              ('scalar', StandardScaler(with_mean = False)),
-                              ('clf', classifier)])
+            pass
+        if self.isnorm:
+            pipeline_steps.append(('scalar', StandardScaler(with_mean=False)))
+        pipeline_steps.append(('clf', classifier))
+        model = Pipeline(steps=pipeline_steps)
 
         true, predicted = [], []
         for i in range(len(self.subjects)):
@@ -67,10 +74,10 @@ class NB:
         pred_matrix[pred_matrix == -1] = 0
 
         evaluation = Evaluation(self.subjects)
-        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix)
+        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix, model_name=self.modelname)
 
 
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
-    model = NB(preprocessor)
-    model.train(lda=False)
+    model = NB(preprocessor, istfidf=True, isnorm=True, islda='small', modelname='nb_tfidf_norm_small')
+    model.train()

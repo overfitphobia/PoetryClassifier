@@ -5,10 +5,11 @@ from gensim.models import Word2Vec
 
 
 class Feature:
-    def __init__(self, trained=True):
+    def __init__(self, trained=False):
         self.vector = feature_ext.CountVectorizer(ngram_range=(1, 2))
         self.tfidftransform = feature_ext.TfidfTransformer(norm='l2')
-        self.ldatransform = LatentDirichletAllocation(n_components=100)
+        self.ldatransform_small = LatentDirichletAllocation(n_components=50)
+        self.ldatransform_large = LatentDirichletAllocation(n_components=250)
         if trained:
             self.w2vmodel = Word2Vec.load('./model/word2vector.model')
 

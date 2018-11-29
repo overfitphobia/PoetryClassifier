@@ -1,12 +1,7 @@
 from preprocess import PreProcess
 from eval import Evaluation
 from feature import Feature
-
-import sklearn.feature_extraction.text as fet
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import SGDClassifier
 from sklearn.pipeline import Pipeline
-from sklearn.decomposition import LatentDirichletAllocation
 import numpy as np
 
 from sklearn.neural_network import MLPClassifier
@@ -16,7 +11,12 @@ from sklearn.preprocessing import StandardScaler
 
 
 class MLP:
-    def __init__(self, pre):
+    def __init__(self, pre, istfidf, isnorm, islda, modelname):
+        self.istfidf = istfidf
+        self.isnorm = isnorm
+        self.islda = islda
+        self.modelname = modelname
+
         self.RAND_SEED = random.randint(0, 100000)
         self.pre = pre
         self.dataset = pre.dataset
@@ -31,8 +31,8 @@ class MLP:
         self.X_train, self.X_test, self.X_dev, \
         self.y_train, self.y_test, self.y_dev = self.pre.dataset_gen(subject, valid)
 
-    def train(self, lda=False):
-        feature = Feature(trained=True)
+    def train(self):
+        feature = Feature(trained=False)
 
         # classifier = SGDClassifier(loss='hinge', penalty='l2',
         #                            max_iter=1000, shuffle=True, validation_fraction=0.1)
@@ -46,17 +46,19 @@ class MLP:
                                    random_state=self.RAND_SEED
                                    )
 
-        if lda:
-            model = Pipeline([('vectorized', feature.vector),
-                              ('tf-idf', feature.tfidftransform),
-                              ('lda', feature.ldatransform),
-                              ('scalar', StandardScaler(with_mean=False)),
-                              ('clf', classifier)])
+        pipeline_steps = [('vectorized', feature.vector)]
+        if self.istfidf:
+            pipeline_steps.append(('tf-idf', feature.tfidftransform))
+        if self.islda == 'small':
+            pipeline_steps.append(('lda', feature.ldatransform_small))
+        elif self.islda == 'large':
+            pipeline_steps.append(('lda', feature.ldatransform_large))
         else:
-            model = Pipeline([('vectorized', feature.vector),
-                              ('tf-idf', feature.tfidftransform),
-                              ('scalar', StandardScaler(with_mean=False)),
-                              ('clf', classifier)])
+            pass
+        if self.isnorm:
+            pipeline_steps.append(('scalar', StandardScaler(with_mean=False)))
+        pipeline_steps.append(('clf', classifier))
+        model = Pipeline(steps=pipeline_steps)
 
         true, predicted = [], []
         for i in range(len(self.subjects)):
@@ -83,5 +85,5 @@ class MLP:
 
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
-    model = MLP(preprocessor)
-    model.train(lda=False)
+    model = MLP(preprocessor, istfidf=True, isnorm=True, islda='None', modelname='mlp_tfidf_norm_lda')
+    model.train()
