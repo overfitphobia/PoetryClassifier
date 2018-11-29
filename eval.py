@@ -18,6 +18,14 @@ class Evaluation:
         eval_result = list()
         eval_result.append("Model evaluation:")
         eval_result.append("Hamming Loss: {}".format(metrics.hamming_loss(true_matrix, pred_matrix)))
+        eval_result.append("Accuracy evaluation: {}".format(metrics.accuracy_score(true_matrix, pred_matrix)))
+        eval_result.append("Accuracy for each category:")
+        eval_result.append("{:25s} {}".format("SUBJECT", "ACCURACY"))
+        for index in range(len(self.subjs)):
+            eval_result.append("{:25s}{:7.4f}".format(self.subjs[index],
+                                               float(sum(true_matrix[:, index] == pred_matrix[:, index]))
+                                               / float(len(true_matrix[:, index]))))
+
         eval_result.append("Classification Report:")
         import warnings
         warnings.filterwarnings('ignore')
@@ -52,6 +60,15 @@ class Evaluation:
                 warnings.filterwarnings('ignore')
                 report_dict = metrics.classification_report(true_matrix, pred_matrix, target_names=Evaluation.subjects,
                                                             output_dict=True)
+                index_subj = 0
+                for entity in report_dict.keys():
+                    report_dict[entity]['accuracy'] = \
+                        float(sum(true_matrix[:, index_subj] == pred_matrix[:, index_subj])) \
+                        / float(len(true_matrix[:, index_subj]))
+                    index_subj += 1
+                    if index_subj == 9:
+                        break
+
                 precisions = []
                 for subj in Evaluation.subjects:
                     precisions.append(report_dict[subj]['precision'])
@@ -80,3 +97,4 @@ class Evaluation:
 if __name__ == '__main__':
     data = Evaluation.overall_evaluate()
     Evaluation.make_diagrams(data, x_label='Subjects', y_label='Precision', title='Model Precision Diagram')
+    Evaluation.make_diagrams(data, x_label='Subjects', y_label='Accuracy', title='Model Precision Diagram')
