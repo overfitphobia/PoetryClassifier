@@ -90,5 +90,5 @@ class MLP:
 
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
-    model = MLP(preprocessor, istfidf=True, isnorm=True, islda='None', modelname='mlp_tfidf_norm_lda')
+    model = MLP(preprocessor, istfidf=True, isnorm=True, islda='None', modelname='MLP')
     model.train()

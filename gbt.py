@@ -132,7 +132,6 @@ class gbt:
 
 
 if __name__ == '__main__':
-    modelname = "GBT_" + "tuned_lda100"
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
-    g = gbt(preprocessor, paramfile="gbt_param.json", istfidf=True, isnorm=True, islda='None', modelname=modelname)
+    g = gbt(preprocessor, paramfile="gbt_param.json", istfidf=True, isnorm=True, islda='None', modelname='GBT')
     g.train()

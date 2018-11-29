@@ -96,7 +96,6 @@ class logreg:
 
 
 if __name__ == '__main__':
-    modelname = "LogReg_" + "lda_100"
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
-    g = logreg(preprocessor, istfidf=True, isnorm=True, islda='None', modelname=modelname)
+    g = logreg(preprocessor, istfidf=True, isnorm=True, islda='None', modelname='LogReg')
     g.train(lda=True)

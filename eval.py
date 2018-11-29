@@ -7,8 +7,7 @@ import os
 
 
 class Evaluation:
-    subjects = ["LOVE", "NATURE", "SOC COM", "RELIGION",
-                "LIVING", "RELA.", "ACT.", "A & S", "M & F"]
+    subjects = ["LOVE", "NATURE", "S. CO.", "RELI.", "LIVI.", "RELA.", "ACT.", "A & S", "M & F"]
 
     def __init__(self, subjs):
         self.subjs = subjs

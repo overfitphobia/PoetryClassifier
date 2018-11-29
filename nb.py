@@ -85,5 +85,10 @@ class NB:
 
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
-    model = NB(preprocessor, istfidf=False, isnorm=False, islda='null', modelname='nb')
+    # istfidf=False  isnorm=False  islda='null'  : [modelname]_null
+    # istfidf=True   isnorm=False  islda='null'  : [modelname]_tfidf_null
+    # istfidf=True   isnorm=True   islda='null'  : [modelname]_tfidf_norm_null
+    # istfidf=True   isnorm=True   islda='small' : [modelname]_tfidf_norm_small
+    # istfidf=True   isnorm=True   islda='large' : [modelname]_tfidf_norm_large
+    model = NB(preprocessor, istfidf=False, isnorm=False, islda='null', modelname='NB')
     model.train()
