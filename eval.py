@@ -7,7 +7,7 @@ import os
 
 
 class Evaluation:
-    subjects = ["LOVE", "NATURE", "S. CO.", "RELI.", "LIVI.", "RELA.", "ACT.", "A & S", "M & F"]
+    subjects = ["LOVE", "NATU.", "S. CO.", "RELI.", "LIVI.", "RELA.", "ACT.", "A & S", "M & F"]
 
     def __init__(self, subjs):
         self.subjs = subjs
@@ -50,26 +50,24 @@ class Evaluation:
                 pred_matrix = hf['pred_matrix'][:]
                 import warnings
                 warnings.filterwarnings('ignore')
-                report_dict = metrics.classification_report(true_matrix, pred_matrix, target_names=Evaluation.subjects,
-                                                            output_dict=True)
-                precisions = []
-                for subj in Evaluation.subjects:
-                    precisions.append(report_dict[subj]['precision'])
-                data[model_name] = precisions
+                data[model_name] = dict()
+                data[model_name]['precision'] = metrics.precision_score(true_matrix, pred_matrix, average=None)
+                data[model_name]['recall'] = metrics.recall_score(true_matrix, pred_matrix, average=None)
+                data[model_name]['f1'] = metrics.f1_score(true_matrix, pred_matrix, average=None)
         return data
 
     @staticmethod
     def make_diagrams(d, x_label='x', y_label='y', title='diagram'):
-        plt.rcParams["figure.figsize"] = (8, 6)
-        plt.title(title)
-        plt.xlabel(x_label)
-        plt.ylabel(y_label)
+        f, axarr = plt.subplots(3, sharex='all')
+        axarr[0].set_title(title)
+        axarr[2].set_xlabel(x_label)
+        axarr[0].ylabel(y_label)
         x = np.arange(len(Evaluation.subjects))
         plt.xticks(x, Evaluation.subjects)
         for model in d.keys():
-            y = d[model]
-            assert len(y) == len(Evaluation.subjects)
-            plt.plot(x, y, label=model)
+            axarr[0].plot(x, d[model]['precision'], label=model)
+            axarr[1].plot(x, d[model]['recall'], label=model)
+            axarr[2].plot(x, d[model]['f1'], label=model)
         plt.legend()
         if not os.path.isdir('diagrams'):
             os.mkdir('diagrams')

@@ -51,7 +51,6 @@ class NB:
             pipeline_steps.append(('tf-idf', feature.tfidftransform))
         if self.islda == 'small':
             pipeline_steps.append(('lda', feature.ldatransform_small))
-            print('hahahahahha')
         elif self.islda == 'large':
             pipeline_steps.append(('lda', feature.ldatransform_large))
         else:
@@ -63,6 +62,7 @@ class NB:
 
         true, predicted = [], []
         for i in range(len(self.subjects)):
+            print(self.subjects[i])
             # preprocess training and testing set
             self.dataset_gen(subject=self.subjects[i], valid=False)
 
@@ -92,5 +92,5 @@ if __name__ == '__main__':
     istfidf=True   isnorm=True   islda='small' : [modelname]_tfidf_norm_small
     istfidf=True   isnorm=True   islda='large' : [modelname]_tfidf_norm_large
     '''
-    model = NB(preprocessor, istfidf=False, isnorm=False, islda='null', modelname='NB')
+    model = NB(preprocessor, istfidf=True, isnorm=True, islda='large', modelname='NB')
     model.train()

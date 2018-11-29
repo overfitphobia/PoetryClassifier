@@ -1,0 +1,20 @@
+Model evaluation:
+Hamming Loss: 0.278149321443936
+Classification Report:
+                      precision    recall  f1-score   support
+
+                LOVE       0.29      0.15      0.20       487
+              NATURE       0.39      0.20      0.26       755
+ SOCIAL COMMENTARIES       0.40      0.38      0.39       882
+            RELIGION       0.19      0.29      0.23       309
+              LIVING       0.52      0.61      0.56      1369
+       RELATIONSHIPS       0.34      0.24      0.28       859
+          ACTIVITIES       0.21      0.12      0.15       440
+     ARTS & SCIENCES       0.30      0.16      0.21       653
+MYTHOLOGY & FOLKLORE       0.11      0.20      0.14       123
+
+           micro avg       0.38      0.32      0.34      5877
+           macro avg       0.30      0.26      0.27      5877
+        weighted avg       0.37      0.32      0.33      5877
+         samples avg       0.36      0.34      0.32      5877
+

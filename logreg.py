@@ -96,5 +96,5 @@ class logreg:
 
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
-    g = logreg(preprocessor, istfidf=True, isnorm=True, islda='None', modelname='LogReg')
+    g = logreg(preprocessor, istfidf=False, isnorm=False, islda='None', modelname='LogReg')
     g.train(lda=True)
