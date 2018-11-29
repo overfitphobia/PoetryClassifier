@@ -20,7 +20,7 @@ class MLP:
             self.modelname += '_tfidf'
         if isnorm:
             self.modelname += '_norm'
-        self.modelname += islda
+        self.modelname += '_' + islda
 
         self.RAND_SEED = random.randint(0, 100000)
         self.pre = pre

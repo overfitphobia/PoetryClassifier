@@ -18,7 +18,7 @@ class SVM:
             self.modelname += '_tfidf'
         if isnorm:
             self.modelname += '_norm'
-        self.modelname += islda
+        self.modelname += '_' + islda
 
         self.pre = pre
         self.dataset = pre.dataset

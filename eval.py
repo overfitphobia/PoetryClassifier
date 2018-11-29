@@ -27,7 +27,11 @@ class Evaluation:
             print(line)
 
         if save:
-            with h5py.File('temp_data/{}_data.h5'.format(model_name), 'w') as hf:
+            if not os.path.isdir('eval_data'):
+                os.mkdir('eval_data')
+            if not os.path.isdir('reports'):
+                os.mkdir('reports')
+            with h5py.File('eval_data/{}_data.h5'.format(model_name), 'w') as hf:
                 hf.create_dataset('true_matrix', data=true_matrix)
                 hf.create_dataset('pred_matrix', data=pred_matrix)
             with open('reports/{}_eval.txt'.format(model_name), 'w') as fp:
@@ -39,8 +43,8 @@ class Evaluation:
     def overall_evaluate():
         data = {}
         # load matrix data from files
-        for file in glob.glob('temp_data/*.h5'):
-            model_name = file.replace('temp_data/', '').replace('_data.h5', '')
+        for file in glob.glob('eval_data/*.h5'):
+            model_name = file.replace('eval_data/', '').replace('_data.h5', '')
             with h5py.File(file, 'r') as hf:
                 true_matrix = hf['true_matrix'][:]
                 pred_matrix = hf['pred_matrix'][:]
