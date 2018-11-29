@@ -48,7 +48,7 @@ class logreg:
         self.X_train, self.X_test, self.X_dev, \
         self.y_train, self.y_test, self.y_dev = self.pre.dataset_gen(subject, valid)
 
-    def train(self, lda=False):
+    def train(self):
         """
         trains a xgboost GradientBoostingClassifier on each subject.
         """
@@ -88,11 +88,6 @@ class logreg:
             predicted_labels.append(predicted)
             true_labels.append(self.y_test)
 
-            # Evaluate
-            print("Evaluation report on the subject of " + str(subj))
-            print("model score = " + str(model.score(self.X_test, self.y_test)))
-            print(metrics.classification_report(self.y_test, predicted))
-            print("\n\n\n")
         true_matrix, pred_matrix = np.array(true_labels, int).T, np.array(predicted_labels, int).T
         true_matrix[true_matrix == -1] = 0
         pred_matrix[pred_matrix == -1] = 0
@@ -104,5 +99,5 @@ class logreg:
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
     # islda should be one of ['None', 'small', 'large']
-    g = logreg(preprocessor, istfidf=False, isnorm=False, islda='None', modelname='LogReg')
-    g.train(lda=True)
+    g = logreg(preprocessor, istfidf=True, isnorm=True, islda='small', modelname='LogReg')
+    g.train()

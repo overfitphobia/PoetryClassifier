@@ -1,6 +1,6 @@
 from preprocess import PreProcess
 import sklearn.feature_extraction.text as feature_ext
-from sklearn.decomposition import LatentDirichletAllocation, PCA
+from sklearn.decomposition import LatentDirichletAllocation
 from gensim.models import Word2Vec
 
 
@@ -9,7 +9,7 @@ class Feature:
         self.vector = feature_ext.CountVectorizer(ngram_range=(1, 2))
         self.tfidftransform = feature_ext.TfidfTransformer(norm='l2')
         self.ldatransform_small = LatentDirichletAllocation(n_components=50)
-        self.ldatransform_large = LatentDirichletAllocation(n_components=250)
+        self.ldatransform_large = LatentDirichletAllocation(n_components=100)
         if trained:
             self.w2vmodel = Word2Vec.load('./model/word2vector.model')
 
