@@ -14,6 +14,11 @@ class NB:
         self.isnorm = isnorm
         self.islda = islda
         self.modelname = modelname
+        if istfidf:
+            self.modelname += '_tfidf'
+        if isnorm:
+            self.modelname += '_norm'
+        self.modelname += islda
 
         self.pre = pre
         self.dataset = pre.dataset
@@ -25,7 +30,7 @@ class NB:
         self.subjects = pre.subjects
 
     def dataset_gen(self, subject, valid=False):
-        self.X_train, self.X_test, self.X_dev,\
+        self.X_train, self.X_test, self.X_dev, \
         self.y_train, self.y_test, self.y_dev = self.pre.dataset_gen(subject, valid)
 
     """
@@ -36,6 +41,7 @@ class NB:
         (3) fit and predict with SVM model (which is optimized by SGDOptimizer)
             Remeber to encode the label with +1/-1
     """
+
     def train(self):
         feature = Feature(trained=False)
         classifier = MultinomialNB()
@@ -79,5 +85,5 @@ class NB:
 
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
-    model = NB(preprocessor, istfidf=True, isnorm=True, islda='small', modelname='nb_tfidf_norm_small')
+    model = NB(preprocessor, istfidf=False, isnorm=False, islda='null', modelname='nb')
     model.train()

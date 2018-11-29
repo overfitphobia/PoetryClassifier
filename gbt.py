@@ -17,9 +17,9 @@ from xgboost.sklearn import XGBClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn import metrics
 
-
 import os
-os.environ['KMP_DUPLICATE_LIB_OK']='True'
+
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
 import numpy as np
 
@@ -31,6 +31,11 @@ class gbt:
         self.isnorm = isnorm
         self.islda = islda
         self.modelname = modelname
+        if istfidf:
+            self.modelname += '_tfidf'
+        if isnorm:
+            self.modelname += '_norm'
+        self.modelname += islda
         self.RAND_SEED = 17
 
         self.pre = pre
@@ -64,17 +69,17 @@ class gbt:
             'silent': 1,
             'seed': self.RAND_SEED
         }
-        
+
         base = {
-                'learning_rate':0.1,
-                'n_estimators':500,
-                 "max_depth":5,
-                 "min_child_weight":1,
-                 "gamma":0,
-                 "subsample":0.8,
-                 "colsample_bytree":0.8,
-                 "scale_pos_weight":1}
-        
+            'learning_rate': 0.1,
+            'n_estimators': 500,
+            "max_depth": 5,
+            "min_child_weight": 1,
+            "gamma": 0,
+            "subsample": 0.8,
+            "colsample_bytree": 0.8,
+            "scale_pos_weight": 1}
+
         true_labels = []
         predicted_labels = []
 
@@ -83,7 +88,7 @@ class gbt:
             self.dataset_gen(subject=subj, valid=False)
 
             # train and predict
-            
+
             if subj in self.params.keys():
                 param_fixed.update(self.params[subj])
             else:
@@ -127,7 +132,7 @@ class gbt:
 
 
 if __name__ == '__main__':
-    modelname = "GBT_"+"tuned_lda100"
+    modelname = "GBT_" + "tuned_lda100"
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
     g = gbt(preprocessor, paramfile="gbt_param.json", istfidf=True, isnorm=True, islda='None', modelname=modelname)
     g.train()

@@ -14,6 +14,11 @@ class SVM:
         self.isnorm = isnorm
         self.islda = islda
         self.modelname = modelname
+        if istfidf:
+            self.modelname += '_tfidf'
+        if isnorm:
+            self.modelname += '_norm'
+        self.modelname += islda
 
         self.pre = pre
         self.dataset = pre.dataset
@@ -36,6 +41,7 @@ class SVM:
         (3) fit and predict with SVM model (which is optimized by SGDOptimizer)
             Remeber to encode the label with +1/-1
     """
+
     def train(self):
         feature = Feature(trained=False)
         classifier = SGDClassifier(loss='hinge', penalty='l2',
@@ -56,7 +62,7 @@ class SVM:
         model = Pipeline(steps=pipeline_steps)
 
         true, predicted = [], []
-        for i in range(len(self.subjects)):
+        for subj in range(len(self.subjects)):
             # preprocess training and testing set
             self.dataset_gen(subject=self.subjects[i], valid=False)
 
@@ -79,5 +85,10 @@ class SVM:
 
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
-    model = SVM(preprocessor, istfidf=True, isnorm=True, islda='small', modelname='nb_tfidf_norm_small')
+    # istfidf=False  isnorm=False  islda='null'  : [modelname]_null
+    # istfidf=True   isnorm=False  islda='null'  : [modelname]_tfidf_null
+    # istfidf=True   isnorm=True   islda='null'  : [modelname]_tfidf_norm_null
+    # istfidf=True   isnorm=True   islda='small' : [modelname]_tfidf_norm_small
+    # istfidf=True   isnorm=True   islda='large' : [modelname]_tfidf_norm_large
+    model = SVM(preprocessor, istfidf=True, isnorm=True, islda='small', modelname='SVM')
     model.train()

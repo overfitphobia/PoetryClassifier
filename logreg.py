@@ -11,11 +11,10 @@ from sklearn.decomposition import LatentDirichletAllocation
 from sklearn.preprocessing import StandardScaler
 from sklearn import metrics
 
-
 import os
 import numpy as np
 
-os.environ['KMP_DUPLICATE_LIB_OK']='True'
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
 
 class logreg:
@@ -25,6 +24,11 @@ class logreg:
         self.isnorm = isnorm
         self.islda = islda
         self.modelname = modelname
+        if istfidf:
+            self.modelname += '_tfidf'
+        if isnorm:
+            self.modelname += '_norm'
+        self.modelname += islda
 
         self.RAND_SEED = 17
         self.pre = pre
@@ -33,7 +37,7 @@ class logreg:
         self.labels = pre.labels
         self.DICT_LABEL2INT = pre.DICT_LABEL2INT
         self.subjects = pre.subjects
-       
+
     def dataset_gen(self, subject, valid=False):
         self.X_train, self.X_test, self.X_dev, \
         self.y_train, self.y_test, self.y_dev = self.pre.dataset_gen(subject, valid)
@@ -48,7 +52,7 @@ class logreg:
             max_iter=100,
             solver='liblinear',
             random_state=self.RAND_SEED)
-        
+
         true_labels = []
         predicted_labels = []
 
@@ -92,7 +96,7 @@ class logreg:
 
 
 if __name__ == '__main__':
-    modelname = "LogReg_"+"lda_100"
+    modelname = "LogReg_" + "lda_100"
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
     g = logreg(preprocessor, istfidf=True, isnorm=True, islda='None', modelname=modelname)
     g.train(lda=True)

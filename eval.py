@@ -28,10 +28,10 @@ class Evaluation:
             print(line)
 
         if save:
-            with h5py.File('results/{}_matrix.h5'.format(model_name), 'w') as hf:
+            with h5py.File('temp_data/{}_data.h5'.format(model_name), 'w') as hf:
                 hf.create_dataset('true_matrix', data=true_matrix)
                 hf.create_dataset('pred_matrix', data=pred_matrix)
-            with open('results/{}_eval.txt'.format(model_name), 'w') as fp:
+            with open('reports/{}_eval.txt'.format(model_name), 'w') as fp:
                 for line in eval_result:
                     fp.write(line)
                     fp.write('\n')
@@ -40,8 +40,8 @@ class Evaluation:
     def overall_evaluate():
         data = {}
         # load matrix data from files
-        for file in glob.glob('results/LogReg_*.h5'):
-            model_name = file.replace('results/', '').replace('_matrix.h5', '')
+        for file in glob.glob('temp_data/*.h5'):
+            model_name = file.replace('temp_data/', '').replace('_data.h5', '')
             with h5py.File(file, 'r') as hf:
                 true_matrix = hf['true_matrix'][:]
                 pred_matrix = hf['pred_matrix'][:]
@@ -77,4 +77,3 @@ class Evaluation:
 if __name__ == '__main__':
     data = Evaluation.overall_evaluate()
     Evaluation.make_diagrams(data, x_label='Subjects', y_label='Precision', title='Model Precision Diagram')
-
