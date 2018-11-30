@@ -63,6 +63,7 @@ class logreg:
         predicted_labels = []
 
         for subj in self.subjects:
+            print(subj)
             # preprocess training and testing set
             self.dataset_gen(subject=subj, valid=False)
 
@@ -99,5 +100,5 @@ class logreg:
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
     # islda should be one of ['None', 'small', 'large']
-    g = logreg(preprocessor, istfidf=True, isnorm=True, islda='small', modelname='LogReg')
+    g = logreg(preprocessor, istfidf=True, isnorm=True, islda='large', modelname='LogReg')
     g.train()

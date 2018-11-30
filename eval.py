@@ -87,7 +87,7 @@ class Evaluation:
         # accuracy
         plt.subplot(221)
         i = 0
-        for feature in model_data.keys():
+        for feature in sorted(model_data.keys()):
             plt.plot(x, model_data[feature]['accuracy'], label=feature, marker=markers[i])
             i += 1
         plt.ylabel('Accuracy')
@@ -96,7 +96,7 @@ class Evaluation:
         # precision
         plt.subplot(222)
         i = 0
-        for feature in model_data.keys():
+        for feature in sorted(model_data.keys()):
             plt.plot(x, model_data[feature]['precision'], label=feature, marker=markers[i])
             i += 1
         plt.ylabel('Precision')
@@ -105,7 +105,7 @@ class Evaluation:
         # recall
         plt.subplot(223)
         i = 0
-        for feature in model_data.keys():
+        for feature in sorted(model_data.keys()):
             plt.plot(x, model_data[feature]['recall'], label=feature, marker=markers[i])
             i += 1
         plt.ylabel('Recall')
@@ -114,7 +114,7 @@ class Evaluation:
         # f1
         plt.subplot(224)
         i = 0
-        for feature in model_data.keys():
+        for feature in sorted(model_data.keys()):
             plt.plot(x, model_data[feature]['f1-score'], label=feature, marker=markers[i])
             i += 1
         plt.ylabel('F1-Score')
