@@ -93,5 +93,5 @@ class SVM:
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
     # islda should be one of ['None', 'small', 'large']
-    model = SVM(preprocessor, istfidf=True, isnorm=True, islda='small', modelname='SVM')
+    model = SVM(preprocessor, istfidf=True, isnorm=True, islda='large', modelname='SVM')
     model.train()
