@@ -51,7 +51,7 @@ class Evaluation:
     def overall_evaluate():
         data = {}
         # load matrix data from files
-        for file in glob.glob('eval_data/NB_*.h5'):
+        for file in glob.glob('eval_data/GBT_*.h5'):
             tokens = file.replace('eval_data/', '').replace('_data.h5', '').split('_')
             model_name = tokens[0]
             feature_name = '_'.join(tokens[1:])
