@@ -87,11 +87,11 @@ class SVM:
         pred_matrix[pred_matrix == -1] = 0
 
         evaluation = Evaluation(self.subjects)
-        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix, model_name='SVM')
+        evaluation.model_evaluate(true_matrix=true_matrix, pred_matrix=pred_matrix, model_name=self.modelname)
 
 
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
     # islda should be one of ['None', 'small', 'large']
-    model = SVM(preprocessor, istfidf=False, isnorm=False, islda='None', modelname='SVM')
+    model = SVM(preprocessor, istfidf=True, isnorm=True, islda='large', modelname='SVM')
     model.train()

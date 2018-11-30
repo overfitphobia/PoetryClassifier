@@ -1,5 +1,17 @@
 Model evaluation:
 Hamming Loss: 0.21901521373538269
+Accuracy evaluation: 0.05174234424498416
+Accuracy for each category:
+SUBJECT                   ACCURACY
+LOVE                      0.8286
+NATURE                    0.7342
+SOCIAL COMMENTARIES       0.6895
+RELIGION                  0.8912
+LIVING                    0.6156
+RELATIONSHIPS             0.6976
+ACTIVITIES                0.8451
+ARTS & SCIENCES           0.7702
+MYTHOLOGY & FOLKLORE      0.9567
 Classification Report:
                       precision    recall  f1-score   support
 
