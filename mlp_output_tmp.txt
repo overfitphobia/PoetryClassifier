@@ -1,0 +1,209 @@
+this is 0 th subject processed
+this is 1 th subject processed
+this is 2 th subject processed
+this is 3 th subject processed
+this is 4 th subject processed
+this is 5 th subject processed
+this is 6 th subject processed
+this is 7 th subject processed
+this is 8 th subject processed
+Model evaluation:
+Hamming Loss: 0.214282920724
+Accuracy evaluation: 0.110172474481
+Accuracy for each category:
+SUBJECT                   ACCURACY
+LOVE                      0.8483
+NATURE                    0.7712
+SOCIAL COMMENTARIES       0.7350
+RELIGION                  0.8972
+LIVING                    0.5899
+RELATIONSHIPS             0.6934
+ACTIVITIES                0.8180
+ARTS & SCIENCES           0.7638
+MYTHOLOGY & FOLKLORE      0.9546
+Classification Report:
+                      precision    recall  f1-score   support
+
+                LOVE       0.58      0.40      0.47       487
+              NATURE       0.59      0.46      0.52       755
+ SOCIAL COMMENTARIES       0.59      0.48      0.53       882
+            RELIGION       0.54      0.37      0.44       309
+              LIVING       0.57      0.58      0.58      1369
+       RELATIONSHIPS       0.49      0.38      0.43       859
+          ACTIVITIES       0.33      0.17      0.22       440
+     ARTS & SCIENCES       0.48      0.37      0.42       653
+MYTHOLOGY & FOLKLORE       0.29      0.03      0.06       123
+
+           micro avg       0.54      0.43      0.48      5877
+           macro avg       0.50      0.36      0.41      5877
+        weighted avg       0.53      0.43      0.47      5877
+         samples avg       0.52      0.46      0.45      5877
+
+----------model1 finished---------
+this is 0 th subject processed
+this is 1 th subject processed
+this is 2 th subject processed
+this is 3 th subject processed
+this is 4 th subject processed
+this is 5 th subject processed
+this is 6 th subject processed
+this is 7 th subject processed
+this is 8 th subject processed
+Model evaluation:
+Hamming Loss: 0.220149399664
+Accuracy evaluation: 0.0739176346357
+Accuracy for each category:
+SUBJECT                   ACCURACY
+LOVE                      0.8518
+NATURE                    0.7342
+SOCIAL COMMENTARIES       0.7420
+RELIGION                  0.9021
+LIVING                    0.5181
+RELATIONSHIPS             0.6983
+ACTIVITIES                0.8451
+ARTS & SCIENCES           0.7702
+MYTHOLOGY & FOLKLORE      0.9567
+Classification Report:
+                      precision    recall  f1-score   support
+
+                LOVE       0.58      0.52      0.54       487
+              NATURE       0.00      0.00      0.00       755
+ SOCIAL COMMENTARIES       0.58      0.62      0.60       882
+            RELIGION       0.57      0.39      0.47       309
+              LIVING       0.00      0.00      0.00      1369
+       RELATIONSHIPS       0.50      0.41      0.45       859
+          ACTIVITIES       0.00      0.00      0.00       440
+     ARTS & SCIENCES       0.00      0.00      0.00       653
+MYTHOLOGY & FOLKLORE       0.00      0.00      0.00       123
+
+           micro avg       0.55      0.22      0.31      5877
+           macro avg       0.25      0.21      0.23      5877
+        weighted avg       0.24      0.22      0.22      5877
+         samples avg       0.35      0.23      0.26      5877
+
+----------model2 finished---------
+this is 0 th subject processed
+this is 1 th subject processed
+this is 2 th subject processed
+this is 3 th subject processed
+this is 4 th subject processed
+this is 5 th subject processed
+this is 6 th subject processed
+this is 7 th subject processed
+this is 8 th subject processed
+Model evaluation:
+Hamming Loss: 0.226015878603
+Accuracy evaluation: 0.0320309750088
+Accuracy for each category:
+SUBJECT                   ACCURACY
+LOVE                      0.8441
+NATURE                    0.7515
+SOCIAL COMMENTARIES       0.7054
+RELIGION                  0.8909
+LIVING                    0.5164
+RELATIONSHIPS             0.6910
+ACTIVITIES                0.8437
+ARTS & SCIENCES           0.7666
+MYTHOLOGY & FOLKLORE      0.9564
+Classification Report:
+                      precision    recall  f1-score   support
+
+                LOVE       0.66      0.19      0.29       487
+              NATURE       0.75      0.10      0.17       755
+ SOCIAL COMMENTARIES       0.61      0.14      0.23       882
+            RELIGION       0.47      0.03      0.05       309
+              LIVING       0.41      0.01      0.02      1369
+       RELATIONSHIPS       0.40      0.04      0.08       859
+          ACTIVITIES       0.25      0.00      0.01       440
+     ARTS & SCIENCES       0.31      0.01      0.02       653
+MYTHOLOGY & FOLKLORE       0.00      0.00      0.00       123
+
+           micro avg       0.58      0.06      0.11      5877
+           macro avg       0.43      0.06      0.10      5877
+        weighted avg       0.47      0.06      0.10      5877
+         samples avg       0.11      0.07      0.08      5877
+
+----------model3 finished---------
+this is 0 th subject processed
+this is 1 th subject processed
+this is 2 th subject processed
+this is 3 th subject processed
+this is 4 th subject processed
+this is 5 th subject processed
+this is 6 th subject processed
+this is 7 th subject processed
+this is 8 th subject processed
+Model evaluation:
+Hamming Loss: 0.257303766279
+Accuracy evaluation: 0.0425906370996
+Accuracy for each category:
+SUBJECT                   ACCURACY
+LOVE                      0.8229
+NATURE                    0.7342
+SOCIAL COMMENTARIES       0.6044
+RELIGION                  0.8159
+LIVING                    0.4970
+RELATIONSHIPS             0.6878
+ACTIVITIES                0.8233
+ARTS & SCIENCES           0.7420
+MYTHOLOGY & FOLKLORE      0.9567
+Classification Report:
+                      precision    recall  f1-score   support
+
+                LOVE       0.19      0.01      0.02       487
+              NATURE       0.00      0.00      0.00       755
+ SOCIAL COMMENTARIES       0.34      0.30      0.32       882
+            RELIGION       0.13      0.12      0.13       309
+              LIVING       0.48      0.57      0.52      1369
+       RELATIONSHIPS       0.32      0.03      0.05       859
+          ACTIVITIES       0.18      0.04      0.07       440
+     ARTS & SCIENCES       0.31      0.10      0.15       653
+MYTHOLOGY & FOLKLORE       0.00      0.00      0.00       123
+
+           micro avg       0.39      0.20      0.27      5877
+           macro avg       0.22      0.13      0.14      5877
+        weighted avg       0.28      0.20      0.21      5877
+         samples avg       0.31      0.21      0.23      5877
+
+----------model4 finished---------
+this is 0 th subject processed
+this is 1 th subject processed
+this is 2 th subject processed
+this is 3 th subject processed
+this is 4 th subject processed
+this is 5 th subject processed
+this is 6 th subject processed
+this is 7 th subject processed
+this is 8 th subject processed
+Model evaluation:
+Hamming Loss: 0.298955766749
+Accuracy evaluation: 0.0267511439634
+Accuracy for each category:
+SUBJECT                   ACCURACY
+LOVE                      0.7518
+NATURE                    0.6621
+SOCIAL COMMENTARIES       0.5688
+RELIGION                  0.8736
+LIVING                    0.5308
+RELATIONSHIPS             0.6072
+ACTIVITIES                0.8046
+ARTS & SCIENCES           0.6149
+MYTHOLOGY & FOLKLORE      0.8955
+Classification Report:
+                      precision    recall  f1-score   support
+
+                LOVE       0.21      0.17      0.19       487
+              NATURE       0.29      0.19      0.23       755
+ SOCIAL COMMENTARIES       0.34      0.40      0.37       882
+            RELIGION       0.08      0.02      0.03       309
+              LIVING       0.51      0.66      0.57      1369
+       RELATIONSHIPS       0.32      0.27      0.30       859
+          ACTIVITIES       0.16      0.06      0.09       440
+     ARTS & SCIENCES       0.25      0.33      0.28       653
+MYTHOLOGY & FOLKLORE       0.06      0.10      0.07       123
+
+           micro avg       0.35      0.34      0.34      5877
+           macro avg       0.25      0.24      0.24      5877
+        weighted avg       0.32      0.34      0.32      5877
+         samples avg       0.34      0.34      0.31      5877
+
