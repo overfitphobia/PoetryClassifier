@@ -8,6 +8,7 @@ import os
 
 class Evaluation:
     subjects = ["LOV.", "NAT.", "S.C.", "REL.", "LIV.", "REL.", "ACT.", "A&S", "M&F"]
+    features = ["cv", "tfidf", "tfidf_norm", "tfidf_norm_lda-small", "tfidf_norm_lds-large"]
 
     def __init__(self, subjs):
         self.subjs = subjs
@@ -23,8 +24,8 @@ class Evaluation:
         eval_result.append("{:25s} {}".format("SUBJECT", "ACCURACY"))
         for index in range(len(self.subjs)):
             eval_result.append("{:25s}{:7.4f}".format(self.subjs[index],
-                                                      float(sum(true_matrix[:, index] == pred_matrix[:, index]))
-                                                      / float(len(true_matrix[:, index]))))
+                                                      metrics.accuracy_score(true_matrix[:, index],
+                                                                             pred_matrix[:, index])))
 
         eval_result.append("Classification Report:")
         import warnings
@@ -76,7 +77,7 @@ class Evaluation:
         return data
 
     @staticmethod
-    def make_diagrams(model_data, title='diagram'):
+    def make_model_performance_diagrams(model_data, title='diagram'):
         assert len(model_data.keys()) == 5
         x = np.arange(len(Evaluation.subjects))
         markers = ['.', '*', '+', 'x', 'd']
@@ -125,10 +126,22 @@ class Evaluation:
         if not os.path.isdir('diagrams'):
             os.mkdir('diagrams')
         plt.savefig('diagrams/{}.png'.format('_'.join(title.lower().split(' '))),
-                    bbox_extra_artists=(lgd, suptitle, ), bbox_inches='tight')
+                    bbox_extra_artists=(lgd, suptitle,), bbox_inches='tight')
+
+    @staticmethod
+    def make_feature_performance_diagrams(data):
+        for feature in Evaluation.features:
+            x = np.arange(len(Evaluation.subjects))
+            markers = ['.', '*', '+', 'x', 'd']
+
+            plt.rcParams["figure.figsize"] = (12, 7)
+            fig = plt.figure(1)
+            for model_name in data.keys:
+                pass
 
 
 if __name__ == '__main__':
     data = Evaluation.overall_evaluate()
     for model_name in data.keys():
-        Evaluation.make_diagrams(data[model_name], title='{} Performance Diagram'.format(model_name))
+        Evaluation.make_model_performance_diagrams(data[model_name], title='{} Performance Diagram'.format(model_name))
+    Evaluation.make_feature_performance_diagram(data)
