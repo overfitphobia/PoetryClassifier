@@ -83,7 +83,6 @@ class MLP:
             # store true labels and predictions
             true.append(self.y_test)
             predicted.append(model.predict(self.X_test))
-            print("this is {} th subject processed".format(i))
 
         # convert them to sparse matrix (N * L)
         # convert them to sparse matrix (N * L)
@@ -99,21 +98,5 @@ class MLP:
 if __name__ == '__main__':
     preprocessor = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
     # islda should be one of ['None', 'small', 'large']
-    model1 = MLP(preprocessor, istfidf=False, isnorm=False, islda='None', modelname='MLP')
-    model1.train()
-    print("----------model1 finished---------")
-
-    model2 = MLP(preprocessor, istfidf=True, isnorm=False, islda='None', modelname='MLP')
-    model2.train()
-    print("----------model2 finished---------")
-
-    model3 = MLP(preprocessor, istfidf=True, isnorm=True, islda='None', modelname='MLP')
-    model3.train()
-    print("----------model3 finished---------")
-
-    model4 = MLP(preprocessor, istfidf=True, isnorm=True, islda='small', modelname='MLP')
-    model4.train()
-    print("----------model4 finished---------")
-
-    model5 = MLP(preprocessor, istfidf=True, isnorm=True, islda='large', modelname='MLP')
-    model5.train()
+    model = MLP(preprocessor, istfidf=True, isnorm=True, islda='None', modelname='MLP')
+    model.train()
