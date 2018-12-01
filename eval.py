@@ -49,10 +49,10 @@ class Evaluation:
                     fp.write('\n')
 
     @staticmethod
-    def overall_evaluate():
+    def overall_evaluate(prefix=''):
         data = {}
         # load matrix data from files
-        for file in glob.glob('eval_data/GBT_*.h5'):
+        for file in glob.glob('eval_data/{}*.h5'.format(prefix)):
             tokens = file.replace('eval_data/', '').replace('_data.h5', '').split('_')
             model_name = tokens[0]
             feature_name = '_'.join(tokens[1:])
@@ -128,20 +128,52 @@ class Evaluation:
         plt.savefig('diagrams/{}.png'.format('_'.join(title.lower().split(' '))),
                     bbox_extra_artists=(lgd, suptitle,), bbox_inches='tight')
 
-    @staticmethod
-    def make_feature_performance_diagrams(data):
-        for feature in Evaluation.features:
-            x = np.arange(len(Evaluation.subjects))
-            markers = ['.', '*', '+', 'x', 'd']
+        plt.close(fig)
 
-            plt.rcParams["figure.figsize"] = (12, 7)
-            fig = plt.figure(1)
-            for model_name in data.keys:
-                pass
+    @staticmethod
+    def make_model_performance_eval_diagrams(model_data, features=None, title='eval diagram'):
+        if features is None or len(features) == 0:
+            print('Wrong parameter: features')
+            return
+
+        features = sorted(features)
+        x = np.arange(len(Evaluation.subjects))
+        markers = ['.', '*']
+
+        plt.rcParams["figure.figsize"] = (12, 7)
+        fig = plt.figure(1)
+
+        # accuracy
+        plt.subplot(121)
+        i = 0
+        for feature in features:
+            plt.plot(x, model_data[feature]['accuracy'], label=feature, marker=markers[i])
+            i += 1
+        plt.ylabel('Accuracy')
+        plt.xticks(x, Evaluation.subjects)
+
+        # f1
+        plt.subplot(122)
+        i = 0
+        for feature in features:
+            plt.plot(x, model_data[feature]['f1-score'], label=feature, marker=markers[i])
+            i += 1
+        plt.ylabel('F1-Score')
+        plt.xticks(x, Evaluation.subjects)
+
+        lgd = plt.legend(loc='lower left', bbox_to_anchor=(1.04, 0))
+        suptitle = fig.suptitle(title, fontsize=20, y=0.95)
+        if not os.path.isdir('diagrams'):
+            os.mkdir('diagrams')
+        plt.savefig('diagrams/{}.png'.format('_'.join(title.lower().split(' '))),
+                    bbox_extra_artists=(lgd, suptitle,), bbox_inches='tight')
+
+        plt.close(fig)
 
 
 if __name__ == '__main__':
-    data = Evaluation.overall_evaluate()
+    data = Evaluation.overall_evaluate(prefix='LogReg')
     for model_name in data.keys():
-        Evaluation.make_model_performance_diagrams(data[model_name], title='{} Performance Diagram'.format(model_name))
-    Evaluation.make_feature_performance_diagram(data)
+        # Evaluation.make_model_performance_diagrams(data[model_name], title='{} Performance Diagram'.format(model_name))
+        Evaluation.make_model_performance_eval_diagrams(data[model_name], features=['cv', 'tfidf'],
+                                                        title='{} Performance Eval Diagram'.format(model_name))
