@@ -32,12 +32,18 @@ class PreProcess:
         self.subjects = ["LOVE", "NATURE", "SOCIAL COMMENTARIES", "RELIGION",
                          "LIVING", "RELATIONSHIPS", "ACTIVITIES", "ARTS & SCIENCES", "MYTHOLOGY & FOLKLORE"]
 
-        # TODO: Remember to fine-tune the boolean parameter below to accelerate the proprocess
-        # TODO: Each time you have employed modification, please set these parameters and remain the save in a json file
+        """
+        # Remember to fine-tune the boolean parameter below to accelerate the proprocess
+        # Each time you have employed modification, please set these parameters and remain the save in a json file
+        """
         self.reload(reload=True)
-        self.tokenizer(save=False, act=False, rmstopwords=True)
+        self.tokenizer(save=False, act=False, rmstopwords=True, islist=False)
         self.corpus = [entity['content'] for entity in self.dataset]
         self.labels = [entity['label'] for entity in self.dataset]
+
+    def generate(self, issave=True, isrmstopwords=True, islist=False):
+        self.reload(reload=False)
+        self.tokenizer(save=issave, act=True, rmstopwords=isrmstopwords, islist=islist)
 
     def reload(self, reload=False):
         if reload:
@@ -47,7 +53,7 @@ class PreProcess:
             with open(self.rootPath) as file:
                 self.dataset = json.load(file)
 
-    def tokenizer(self, save=False, act=True, rmstopwords=False):
+    def tokenizer(self, save=False, act=True, rmstopwords=False, islist=False):
         if act:
             stopwords_set = set(stopwords.words('english'))
             for index in range(len(self.dataset)):
@@ -58,8 +64,10 @@ class PreProcess:
                     tokens = [word for word in word_tokenize(self.dataset[index]['content'].lower())
                               if word not in string.punctuation]
                 labels = [self.DICT_LABEL2INT[label] for label in self.dataset[index]['label']]
-                self.dataset[index]['content'] = " ".join(tokens)
-                # self.dataset[index]['content'] = tokens
+                if islist:
+                    self.dataset[index]['content'] = tokens
+                else:
+                    self.dataset[index]['content'] = " ".join(tokens)
                 self.dataset[index]['label'] = labels
             if save:
                 with open(self.savePath, 'w') as file:
@@ -76,3 +84,15 @@ class PreProcess:
         else:
             x_dev, y_dev = None, None
         return x_train, x_test, x_dev, y_train, y_test, y_dev
+
+
+if __name__ == '__main__':
+    model_no_stopwords = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords.json')
+    model_no_stopwords.generate(issave=True, isrmstopwords=True, islist=False)
+
+    model_with_stopwords = PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_with_stopwords.json')
+    model_with_stopwords.generate(issave=True, isrmstopwords=False, islist=False)
+
+    model_no_stopwords_list = model_no_stopwords = \
+        PreProcess(root='./corpus/corpus.json', save='./corpus/corpus_nostopwords_list.json')
+    model_no_stopwords_list.generate(issave=True, isrmstopwords=True, islist=True)
