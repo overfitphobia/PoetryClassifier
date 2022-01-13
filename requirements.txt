@@ -4,7 +4,7 @@ numpy==1.15.3
 scikit-learn==0.20.0
 gensim==3.6.0
 pandas==0.20.3
-Pillow==5.0.0
+Pillow==9.0.0
 scipy==1.1.0
 tensorboard==1.11.0
 tensorflow==1.11.0
